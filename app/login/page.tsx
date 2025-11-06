@@ -64,7 +64,7 @@ export default function page() {
       return;
     }
 
-    router.push("/dashboard");
+    router.push(`/dashboard/${data[0].id}`);
   }
 
   return (

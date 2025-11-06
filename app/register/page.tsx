@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Footer from "../../components/Footer";
 import Image from "next/image";
@@ -31,6 +31,12 @@ export default function page() {
     null
   );
 
+  useEffect(() => {
+    const { data } = supabase.storage.from("user_bk").getPublicUrl("user.png");
+
+    setUserImagePreview(data.publicUrl);
+  }, []);
+
   ///ฟังก์ชันเลือกรูปภาพเพื่อพรีวิวก่อนที่จะอัปโหลด
   function handleSelectImagePreview(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
@@ -55,6 +61,23 @@ export default function page() {
       });
       return;
     }
+    //ตรวจสอบปีเกิด ไม่ให้มากกว่าปีปัจจุบัน
+    const birthYear = new Date(birthdate).getFullYear();
+    const currentYear = new Date().getFullYear();
+
+    if (birthYear >= currentYear) {
+      SweetAlert.fire({
+        icon: "warning",
+        iconColor: "#E30707",
+        title: "ปีเกิดไม่ถูกต้อง",
+        text: "กรุณาเลือกปีเกิดที่น้อยกว่าปีปัจจุบัน",
+        showConfirmButton: true,
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: "#3085D6",
+      });
+      return;
+    }
+
     // show dialog loading
     SweetAlert.fire({
       icon: "success",
@@ -83,7 +106,16 @@ export default function page() {
           .getPublicUrl(new_image_flie_name);
         image_url = data.publicUrl;
       }
+      //กรณีที่ไม่ได้เลือกรูปภาพ ให้ใช้รูป user.png
+    } else if (!image_url) {
+      // ใช้รูป user.png
+      const { data: defaultImg } = supabase.storage
+        .from("user_bk")
+        .getPublicUrl("user.png");
+
+      image_url = defaultImg.publicUrl;
     }
+
     //--------บันทึกลงตาราง supabase---------
     const { data, error } = await supabase.from("user_tb").insert({
       fullname: fullname,
@@ -116,6 +148,7 @@ export default function page() {
       setUserImagePreview(null);
       image_url = "";
       //redirect กลับไปหน้า แสดงงานทั้งหมด
+      router.push("/login");
     }
   }
 
@@ -240,13 +273,14 @@ export default function page() {
             {/* Date of Birth Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                วัน/เดือน/ปี เกิด
+                เดือน/วัน/ปี เกิด
               </label>
               <div className="relative">
                 <SlCalender className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
                   type="date"
                   value={birthdate}
+                  placeholder="เลือก"
                   onChange={(e) => setBirthdate(e.target.value)}
                   // ใช้ Tailwind utility เพื่อให้ placeholder หายไปเมื่อเลือกวันที่แล้ว
                   className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${
@@ -300,7 +334,7 @@ export default function page() {
                 <img
                   src={userimagePreviewUrl}
                   alt="preview"
-                  className="w-24 h-24 rounded-lg object-cover border-2 border-green-500"
+                  className="w-24 h-24 rounded-lg object-cover "
                 />
               )}
             </div>
