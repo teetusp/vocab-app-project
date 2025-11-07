@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="bg-indigo-700 py-8">
       <div>
         <h3 className="text-md text-gray-600 text-center text-white">
-          Created by Developer Team
+          Created by SAU 
           <br />
           Copyright © 2025 All rights reserved.
         </h3>

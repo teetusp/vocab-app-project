@@ -39,7 +39,7 @@ export default function page() {
       const { data, error } = await supabase
         .from("user_tb")
         .select("*")
-        .eq("id", id)
+        .eq("user_id", id)
         .single();
 
       if (error) {
@@ -63,17 +63,17 @@ export default function page() {
   useEffect(() => {
     async function fetchUser() {
       try {
-        const userId = localStorage.getItem("id");
+        const userId = localStorage.getItem("user_id");
         if (!userId) {
           console.error("ไม่พบ userId ใน localStorage");
           return;
         }
 
-        // 🔹 ดึงข้อมูลผู้ใช้จากตาราง user_tb
+        // ดึงข้อมูลผู้ใช้จากตาราง user_tb
         const { data, error } = await supabase
           .from("user_tb")
-          .select("id, fullname, user_image_url")
-          .eq("id", userId)
+          .select("user_id, fullname, user_image_url")
+          .eq("user_id", userId)
           .single();
 
         if (error) {
@@ -82,7 +82,13 @@ export default function page() {
         }
 
         if (data) {
-          setUser(data);
+          setUser(
+            {
+              id: data.user_id,
+              fullname: data.fullname,
+              user_image_url: data.user_image_url,
+            }
+          );
         }
       } catch (ex) {
         console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ Supabase:", ex);
@@ -170,10 +176,10 @@ export default function page() {
         fullname: fullname,
         email: email,
         password: password,
-        birthdate: new Date().toISOString(),
+        birthdate: birthdate,
         user_image_url: image_url,
       })
-      .eq("id", id);
+      .eq("user_id", id);
 
     //ตรวจสอบ
     if (error) {
@@ -192,6 +198,7 @@ export default function page() {
       setFullname("");
       setEmail("");
       setPassword("");
+      setBirthdate("");
       setImageFile(null);
       setPreviewFile(null);
       image_url = "";
@@ -203,7 +210,7 @@ export default function page() {
   // ฟังก์ชันออกจากระบบ
   async function handleClickSignOut() {
     console.log("ออกกำลังออกจากระบบ...");
-    localStorage.removeItem("id");
+    localStorage.removeItem("user_id");
     console.log("localStorage ลบเรียบร้อย");
     //redirect to home page
     router.push("/");
@@ -416,6 +423,7 @@ export default function page() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

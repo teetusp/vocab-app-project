@@ -41,7 +41,7 @@ export default function page() {
 
       const { data, error } = await supabase
         .from("user_tb")
-        .select("id, email, password")
+        .select("user_id, email, password")
         .eq("email", email) // กรองข้อมูลโดยให้ email ตรงกับค่าที่ผู้ใช้กรอก
         .eq("password", password) // กรองข้อมูลเพิ่มเติม โดยให้ password ตรงกับค่าที่ผู้ใช้กรอก
         .single();
@@ -65,8 +65,8 @@ export default function page() {
         return;
       }
 
-      localStorage.setItem("id", data.id);
-      router.push(`/dashboard/${data.id}`);
+      localStorage.setItem("user_id", data.user_id);
+      router.push(`/dashboard/${data.user_id}`);
     } catch (ex) {
       console.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ:", ex);
       alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
