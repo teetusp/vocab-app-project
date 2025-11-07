@@ -24,7 +24,7 @@ export default function page() {
   const [password, setPassword] = useState<string>("");
   const [birthdate, setBirthdate] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [gender, setGender] = useState<string>("");
+  const [gender, setGender] = useState<string>("male");
 
   const [user_image_flie, setUserImageFile] = useState<File | null>(null);
   const [userimagePreviewUrl, setUserImagePreview] = useState<string | null>(
@@ -50,7 +50,7 @@ export default function page() {
   async function handleUploadAndSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     //ตรวจสอบการกรอกข้อมูล
-    if (!fullname || !email || !password || !birthdate || !gender) {
+    if (fullname.trim() == '' || email.trim() == '' || password.trim() == '' || birthdate == '' || gender == '') {
       SweetAlert.fire({
         icon: "warning",
         iconColor: "#E30707",
@@ -283,9 +283,8 @@ export default function page() {
                   placeholder="เลือก"
                   onChange={(e) => setBirthdate(e.target.value)}
                   // ใช้ Tailwind utility เพื่อให้ placeholder หายไปเมื่อเลือกวันที่แล้ว
-                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${
-                    birthdate ? "text-gray-700" : "text-gray-400"
-                  }`}
+                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${birthdate ? "text-gray-700" : "text-gray-400"
+                    }`}
                 />
               </div>
             </div>
