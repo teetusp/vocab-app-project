@@ -111,6 +111,7 @@ export default function page() {
     const birthYear = new Date(birthdate).getFullYear();
     const currentYear = new Date().getFullYear();
 
+    //ตรวจสอบปีเกิด
     if (birthYear >= currentYear) {
       SweetAlert.fire({
         icon: "warning",
