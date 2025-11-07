@@ -27,7 +27,7 @@ export default function page() {
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
-    if (!email || !password) {
+    if (email.trim() == '' || password.trim() == '') {
       SweetAlert.fire({
         icon: "warning",
         iconColor: "#E30707",
@@ -38,12 +38,12 @@ export default function page() {
       });
       return;
     }
-
+    
     const { data, error } = await supabase
       .from("user_tb")
       .select("*")
-      .eq("email", email)
-      .eq("password", password);
+      .eq("email", email) // กรองข้อมูลโดยให้ email ตรงกับค่าที่ผู้ใช้กรอก
+      .eq("password", password); // กรองข้อมูลเพิ่มเติม โดยให้ password ตรงกับค่าที่ผู้ใช้กรอก
 
     if (error) {
       alert("พบข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");

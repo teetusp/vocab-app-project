@@ -31,6 +31,7 @@ export default function page() {
     null
   );
 
+  //ตอนโหลดหน้า จะแสดงรูป user.png
   useEffect(() => {
     const { data } = supabase.storage.from("user_bk").getPublicUrl("user.png");
 
@@ -47,6 +48,7 @@ export default function page() {
       setUserImagePreview(URL.createObjectURL(file as Blob));
     }
   }
+
   async function handleUploadAndSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     //ตรวจสอบการกรอกข้อมูล
