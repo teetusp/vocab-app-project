@@ -52,7 +52,7 @@ export default function page() {
   async function handleUploadAndSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     //ตรวจสอบการกรอกข้อมูล
-    if (fullname.trim() == '' || email.trim() == '' || password.trim() == '' || birthdate == '' || gender == '') {
+    if (fullname.trim() == '' || email.trim() == '' || password.trim() == '' || birthdate == '' ) {
       SweetAlert.fire({
         icon: "warning",
         iconColor: "#E30707",
@@ -317,6 +317,7 @@ export default function page() {
                 ))}
               </div>
             </div>
+            {/* User Image Upload */}
             <div className="mt-1 flex items-center space-x-4">
               <input
                 type="file"

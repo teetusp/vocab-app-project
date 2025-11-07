@@ -26,45 +26,51 @@ export default function page() {
   // ฟังก์ชัน Login
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    try {
+      if (email.trim() == "" || password.trim() == "" ) {
+        SweetAlert.fire({
+          icon: "warning",
+          iconColor: "#E30707",
+          title: "กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน",
+          showConfirmButton: true,
+          confirmButtonText: "ตกลง",
+          confirmButtonColor: "#3085D6",
+        });
+        return;
+      }
 
-    if (email.trim() == '' || password.trim() == '') {
-      SweetAlert.fire({
-        icon: "warning",
-        iconColor: "#E30707",
-        title: "กรุณากรอกอีเมลและรหัสผ่านให้ครบถ้วน",
-        showConfirmButton: true,
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#3085D6",
-      });
-      return;
+      const { data, error } = await supabase
+        .from("user_tb")
+        .select("id, email, password")
+        .eq("email", email) // กรองข้อมูลโดยให้ email ตรงกับค่าที่ผู้ใช้กรอก
+        .eq("password", password) // กรองข้อมูลเพิ่มเติม โดยให้ password ตรงกับค่าที่ผู้ใช้กรอก
+        .single();
+
+      if (error) {
+        SweetAlert.fire({
+          icon: "error",
+          iconColor: "#E30707",
+          title: "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+          showConfirmButton: true,
+          confirmButtonText: "ตกลง",
+          confirmButtonColor: "#3085D6",
+        });
+        console.log(error.message);
+        return;
+      }
+      
+      if (!data ) {
+        alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง");
+        console.log("ไม่พบผู้ใช้ที่ตรงกับอีเมลหรือรหัสผ่านที่กรอก");
+        return;
+      }
+
+      localStorage.setItem("id", data.id);
+      router.push(`/dashboard/${data.id}`);
+    } catch (ex) {
+      console.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ:", ex);
+      alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
     }
-    
-    const { data, error } = await supabase
-      .from("user_tb")
-      .select("*")
-      .eq("email", email) // กรองข้อมูลโดยให้ email ตรงกับค่าที่ผู้ใช้กรอก
-      .eq("password", password); // กรองข้อมูลเพิ่มเติม โดยให้ password ตรงกับค่าที่ผู้ใช้กรอก
-
-    if (error) {
-      alert("พบข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
-      console.log(error.message);
-      return;
-    }
-
-    //ตรวจสอบว่าพบผู้ใช้หรือไม่
-    if (!data || data.length === 0) {
-      SweetAlert.fire({
-        icon: "error",
-        iconColor: "#E30707",
-        title: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
-        showConfirmButton: true,
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#3085D6",
-      });
-      return;
-    }
-
-    router.push(`/dashboard/${data[0].id}`);
   }
 
   return (

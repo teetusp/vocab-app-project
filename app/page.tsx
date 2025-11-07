@@ -5,7 +5,7 @@ import design from "../assets/design.png";
 import card from "../assets/card.png";
 import follow from "../assets/follow.png";
 import Footer from "../components/Footer";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/NavBarHome";
 
 export default function page() {
   return (
