@@ -5,15 +5,17 @@ import design from "./../assets/design.png";
 import Image from "next/image";
 import Link from "next/link";
 import { CiLogin } from "react-icons/ci";
+import { useRouter } from "next/navigation";
 
 export default function NavBar() {
+  const router = useRouter();
   return (
     <div className="sticky bg-blue-200/90 backdrop-blur-sm shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* โลโก้/ชื่อแอป */}
           <div
-            onClick={() => window.location.reload()}
+            onClick={() => router.push("/")}
             className="flex items-center space-x-2 cursor-pointer"
           >
             <Image src={rocket} alt="Logo" className="w-10 h-10 mr-2" />

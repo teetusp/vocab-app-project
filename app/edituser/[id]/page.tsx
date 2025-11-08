@@ -59,7 +59,7 @@ export default function page() {
     fetchData();
   }, []);
 
-  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
+  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า dashboard + supabase
   useEffect(() => {
     async function fetchUser() {
       try {

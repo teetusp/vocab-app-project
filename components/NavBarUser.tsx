@@ -1,6 +1,7 @@
 "use client";
 import react from "react";
 import Image from "next/image";
+import Link from "next/link";
 import rocket from "../assets/rocket.png";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -90,7 +91,24 @@ export default function page() {
                 <span className="text-red-500">Vocab</span>
               </h1>
             </div>
-
+            <Link
+              href={`/dashboard/${user?.id}`}
+              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
+            >
+              Dashbaord
+            </Link>
+            <Link
+              href={`/userhistory/${user?.id}`}
+              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
+            >
+              History
+            </Link>
+            <Link
+              href={`/usertest/${user?.id}`}
+              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
+            >
+              Quiz
+            </Link>
             <div className="relative ">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}

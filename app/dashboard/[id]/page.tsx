@@ -19,7 +19,6 @@ type User = {
 export default function page() {
   const router = useRouter();
 
-  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
   // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
@@ -57,17 +56,9 @@ export default function page() {
     fetchUser();
   }, []);
 
-  // ฟังก์ชันออกจากระบบ
-  async function handleClickSignOut() {
-    console.log("ออกกำลังออกจากระบบ...");
-    localStorage.removeItem("user_id");
-    console.log("localStorage ลบเรียบร้อย");
-    //redirect to home page
-    router.push("/");
-  }
   const handleClickVocab = () => {
     if (user?.id) {
-      router.push(`/showvocab/${user?.id}`);
+      router.push(`/dashboardvocab/${user?.id}`);
       console.log("Go to showvocab user:", user?.id);
     } else {
       console.error("ไม่พบ user id");
@@ -112,7 +103,7 @@ export default function page() {
 
             {/* Placeholder สำหรับเนื้อหา Dashboard (อัปเดตแล้ว) */}
             <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link href={`/showvocab/${user?.id}`} onClick={handleClickVocab}>
+              <Link href={`/dashboardvocab/${user?.id}`} onClick={handleClickVocab}>
                 <div className="h-40 bg-blue-100 rounded-xl flex flex-col items-center justify-center text-blue-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
                   <Image
                     src={alpahabet}
@@ -123,7 +114,7 @@ export default function page() {
                 </div>
               </Link>
 
-              <Link href={`/history/${user?.id}`} onClick={handleClickHistory}>
+              <Link href={`/userhistory/${user?.id}`} onClick={handleClickHistory}>
                 <div className="h-40 bg-green-100 rounded-xl flex flex-col items-center justify-center text-green-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
                   <Image
                     src={history}
@@ -134,7 +125,7 @@ export default function page() {
                 </div>
               </Link>
 
-              <Link href={`/history/${user?.id}`} onClick={handleClickTest}>
+              <Link href={`/usertest/${user?.id}`} onClick={handleClickTest}>
                 <div className="h-40 bg-red-100 rounded-xl flex flex-col items-center justify-center text-red-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
                   <Image
                     src={test}
