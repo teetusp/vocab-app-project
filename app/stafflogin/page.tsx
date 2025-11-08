@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Link from "next/link";
 import { useState } from "react";
@@ -8,8 +7,6 @@ import Image from "next/image";
 import rocket from "../../assets/rocket.png";
 import { useRouter } from "next/navigation";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
-import { FcGoogle } from "react-icons/fc";
-import { FaFacebookF } from "react-icons/fa";
 import { CiMail } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import { FaEye } from "react-icons/fa";
@@ -40,8 +37,8 @@ export default function page() {
       }
 
       const { data, error } = await supabase
-        .from("user_tb")
-        .select("user_id, email, password")
+        .from("staff_tb")
+        .select("staff_id, email, password")
         .eq("email", email) // กรองข้อมูลโดยให้ email ตรงกับค่าที่ผู้ใช้กรอก
         .eq("password", password) // กรองข้อมูลเพิ่มเติม โดยให้ password ตรงกับค่าที่ผู้ใช้กรอก
         .single();
@@ -65,8 +62,7 @@ export default function page() {
         return;
       }
 
-      localStorage.setItem("user_id", data.user_id);
-      router.push(`/dashboard/${data.user_id}`);
+      router.push(`/showalluser`);
     } catch (ex) {
       console.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ:", ex);
       alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");
@@ -111,37 +107,13 @@ export default function page() {
           </div>
 
           <h1 className="text-center text-gray-500 mb-8 text-4xl font-bold">
-            Welcome Back
+            Staff Login
             <br />
             <span className="text-sm text-gray-400">
               {" "}
               Sign in to your account{" "}
             </span>
           </h1>
-
-          {/* --- Social Sign-in Options --- */}
-          <div className="space-y-4 mb-8">
-            <button className="w-full py-3 bg-white border-2 border-gray-300 rounded-xl shadow-sm flex items-center justify-center space-x-3 hover:shadow-md transition duration-150 transform hover:scale-[1.01] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-200">
-              <FcGoogle className="w-6 h-6 font-bold" />
-              <span className="text-gray-700 font-medium">
-                เข้าสู่ระบบด้วย Google
-              </span>
-            </button>
-
-            <button className="w-full py-3 bg-blue-600 border-2 border-gray-300 rounded-xl shadow-sm flex items-center justify-center space-x-3 hover:shadow-md transition duration-150 transform hover:scale-[1.01] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-200">
-              <FaFacebookF className="w-6 h-6 font-bold text-white" />
-              <span className="text-white">เข้าสู่ระบบด้วย Facebook</span>
-            </button>
-          </div>
-
-          {/* ตัวแบ่ง (Divider) */}
-          <div className="flex items-center my-6">
-            <div className="flex-grow border-t border-gray-300"></div>
-            <span className="flex-shrink mx-4 text-gray-500 font-medium">
-              หรือ
-            </span>
-            <div className="flex-grow border-t border-gray-300"></div>
-          </div>
 
           {/* --- Email and Password Form --- */}
           <form onSubmit={handleLogin} className="space-y-6">
@@ -202,14 +174,14 @@ export default function page() {
 
           <div className="text-center text-sm text-gray-500 mt-8 ">
             <Link
-              href="/forgot-password"
+              href="/forgot-password-staff"
               className="text-green-500 hover:text-green-600  hover:underline"
             >
               ลืมรหัสผ่าน?{" "}
             </Link>
             หรือ{" "}
             <Link
-              href="/register"
+              href="/staffregister"
               className="text-green-500 hover:text-green-600 hover:underline"
             >
               สมัครสมาชิกใหม่
@@ -217,10 +189,10 @@ export default function page() {
           </div>
           <div className="flex justify-center mt-4">
             <Link
-              href="/stafflogin"
+              href="/login"
               className="text-indigo-500 text-sm hover:text-blue-600 hover:underline"
             >
-              สำหรับเจ้าหน้าที่
+              กลับไปหน้าผู้ใช้
             </Link>
           </div>
         </div>

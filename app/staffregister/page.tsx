@@ -1,12 +1,11 @@
 "use client";
 import React from "react";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import Footer from "../../components/Footer";
 import Image from "next/image";
 import rocket from "../../assets/rocket.png";
+import Footer from "../../components/Footer";
+import Link from "next/link";
 import SweetAlert from "sweetalert2";
-import { useRouter } from "next/navigation";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 import { CiUser } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
@@ -14,7 +13,8 @@ import { CiLock } from "react-icons/ci";
 import { FaEye } from "react-icons/fa";
 import { FaEyeSlash } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
-import { supabase } from "./../../lib/supabaseClient";
+import { supabase } from "../../lib/supabaseClient";
+import { useRouter } from "next/navigation";
 
 export default function page() {
   const router = useRouter();
@@ -23,36 +23,42 @@ export default function page() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [birthdate, setBirthdate] = useState<string>("");
+  const [status, setStatus] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [gender, setGender] = useState<string>("male");
 
-  const [user_image_file, setUserImageFile] = useState<File | null>(null);
-  const [userimagePreviewUrl, setUserImagePreview] = useState<string | null>(
+  const [staff_image_file, setStaffImageFile] = useState<File | null>(null);
+  const [staffimagePreviewUrl, setStaffImagePreview] = useState<string | null>(
     null
   );
 
-  //ตอนโหลดหน้า จะแสดงรูป user.png
+  //ตอนโหลดหน้า จะแสดงรูป staff.png
   useEffect(() => {
-    const { data } = supabase.storage.from("user_bk").getPublicUrl("user.png");
+    const { data } = supabase.storage.from("staff_bk").getPublicUrl("staff.png");
 
-    setUserImagePreview(data.publicUrl);
+    setStaffImagePreview(data.publicUrl);
   }, []);
 
   ///ฟังก์ชันเลือกรูปภาพเพื่อพรีวิวก่อนที่จะอัปโหลด
   function handleSelectImagePreview(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0] || null;
 
-    setUserImageFile(file);
+    setStaffImageFile(file);
 
     if (file) {
-      setUserImagePreview(URL.createObjectURL(file as Blob));
+      setStaffImagePreview(URL.createObjectURL(file as Blob));
     }
   }
 
   async function handleUploadAndSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     //ตรวจสอบการกรอกข้อมูล
-    if (fullname.trim() == '' || email.trim() == '' || password.trim() == '' || birthdate == '' ) {
+    if (
+      fullname.trim() == "" ||
+      email.trim() == "" ||
+      password.trim() == "" ||
+      birthdate == ""
+    ) {
       SweetAlert.fire({
         icon: "warning",
         iconColor: "#E30707",
@@ -90,12 +96,12 @@ export default function page() {
 
     let image_url = "";
     //ตรวจสอบว่ามีการเลือกรูปภาพเพื่อที่จะอัปโหลดหรือไม่
-    if (user_image_file) {
-      const new_image_file_name = `${Date.now()}-${user_image_file?.name}`;
+    if (staff_image_file) {
+      const new_image_file_name = `${Date.now()}-${staff_image_file?.name}`;
       //อัปโหลดรูป
       const { data, error } = await supabase.storage
-        .from("user_bk")
-        .upload(new_image_file_name, user_image_file);
+        .from("staff_bk")
+        .upload(new_image_file_name, staff_image_file);
 
       if (error) {
         alert("พบข้อผิดพลาดในการอัปโหลดรูปภาพ กรุณาลองใหม่อีกครั้ง");
@@ -104,7 +110,7 @@ export default function page() {
       } else {
         // get url ของรูปที่
         const { data } = supabase.storage
-          .from("user_bk")
+          .from("staff_bk")
           .getPublicUrl(new_image_file_name);
         image_url = data.publicUrl;
       }
@@ -112,20 +118,21 @@ export default function page() {
     } else if (!image_url) {
       // ใช้รูป user.png
       const { data: defaultImg } = supabase.storage
-        .from("user_bk")
-        .getPublicUrl("user.png");
+        .from("staff_bk")
+        .getPublicUrl("staff.png");
 
       image_url = defaultImg.publicUrl;
     }
 
     //--------บันทึกลงตาราง supabase---------
-    const { data, error } = await supabase.from("user_tb").insert({
+    const { data, error } = await supabase.from("staff_tb").insert({
       fullname: fullname,
       email: email,
       password: password,
       birthdate: birthdate,
       gender: gender,
-      user_image_url: image_url,
+      status : false,
+      staff_image_url: image_url,
     });
     //ตรวจสอบ
     if (error) {
@@ -146,11 +153,11 @@ export default function page() {
       setPassword("");
       setBirthdate("");
       setGender("");
-      setUserImageFile(null);
-      setUserImagePreview(null);
+      setStaffImageFile(null);
+      setStaffImagePreview(null);
       image_url = "";
       //redirect กลับไปหน้า แสดงงานทั้งหมด
-      router.push("/login");
+      router.push("/stafflogin");
     }
   }
 
@@ -203,7 +210,7 @@ export default function page() {
             <br />
             <span className="text-sm text-gray-400">
               {" "}
-              ลงทะเบียนเพื่อเริ่มต้นใช้งาน Card Vocab
+              สำหรับผู้ดูแลระบบ
             </span>
           </h1>
 
@@ -285,8 +292,9 @@ export default function page() {
                   placeholder="เลือก"
                   onChange={(e) => setBirthdate(e.target.value)}
                   // ใช้ Tailwind utility เพื่อให้ placeholder หายไปเมื่อเลือกวันที่แล้ว
-                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${birthdate ? "text-gray-700" : "text-gray-400"
-                    }`}
+                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${
+                    birthdate ? "text-gray-700" : "text-gray-400"
+                  }`}
                 />
               </div>
             </div>
@@ -332,9 +340,9 @@ export default function page() {
               >
                 เลือกรูปภาพ
               </label>
-              {userimagePreviewUrl && (
+              {staffimagePreviewUrl && (
                 <img
-                  src={userimagePreviewUrl}
+                  src={staffimagePreviewUrl}
                   alt="preview"
                   className="w-24 h-24 rounded-lg object-cover "
                 />
