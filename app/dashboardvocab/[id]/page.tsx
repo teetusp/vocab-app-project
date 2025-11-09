@@ -7,6 +7,7 @@ import { supabase } from "@/lib/supabaseClient";
 import NavBarUser from "../../../components/NavBarUser";
 import { IoIosArrowBack } from "react-icons/io";
 import Footer from "../../../components/Footer";
+import selectall from "../../../assets/selectall.png";
 type Category = {
   cat_id: number;
   category_name: string;
@@ -164,6 +165,21 @@ export default function page() {
             <div className="bg-white p-6 rounded-3xl shadow-2xl border-4 border-indigo-200/50">
               {/* ปุ่มเลือกหมวดหมู่ (Category Filter) */}
               <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
+                {/* ปุ่ม "ทั้งหมด" */}
+                <button
+                  onClick={() => setActiveCategory(null)} // หรือ 0 ก็ได้ถ้าใช้ตัวเลข
+                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-bold text-sm transition duration-200 shadow-lg ${
+                    activeCategory === null
+                      ? `bg-indigo-500 text-white shadow-indigo-300`
+                      : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                  }`}
+                >
+                  <Image src={selectall} alt= "ทั้งหมด" className="w-6 h-6" />{" "}
+                  {/* ใส่ icon "ทั้งหมด" ได้ */}
+                  <span>ทั้งหมด</span>
+                </button>
+
+                {/* ปุ่มหมวดหมู่อื่น ๆ */}
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.cat_id}
@@ -174,9 +190,7 @@ export default function page() {
                         : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
                     }`}
                   >
-                    {/* รูปภาพไอคอนหมวดหมู่ */}
                     <img src={category.cat_image_url} className="w-5 h-5" />
-                    {/* ชื่อหมวดหมู่ */}
                     <span>{category.category_name}</span>
                   </button>
                 ))}
