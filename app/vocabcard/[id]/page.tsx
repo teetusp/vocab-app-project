@@ -33,6 +33,46 @@ export default function page() {
   const [type, setType] = useState<string>("");
   const [vocabImageUrl, setVocabImageUrl] = useState<string | null>(null);
 
+  // ฟังก์ชันสําหรับออกเสียง ENG
+  const handleSpeak = (text: string) => {
+    if (!text) return;
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US"; // ถ้าอยากให้ออกเสียงภาษาอังกฤษ
+    utterance.rate = 0.9; // ความเร็ว (0.1 - 10)
+    utterance.pitch = 1; // ระดับเสียง
+    utterance.volume = 1; // ระดับความดัง (0 - 1)
+    window.speechSynthesis.speak(utterance);
+  };
+
+  const handleSpeakThaiMeaning = (thaiText: string) => {
+    if (!thaiText) return;
+
+    const synth = window.speechSynthesis;
+    let voices = synth.getVoices();
+
+    // ถ้ายังไม่โหลด voices ให้รอ event ก่อน
+    if (voices.length === 0) {
+      synth.onvoiceschanged = () => handleSpeakThaiMeaning(thaiText);
+      return;
+    }
+
+    // หาเสียงภาษาไทย ถ้าไม่มีใช้ en-US แทน
+    const thaiVoice =
+      voices.find((v) => v.lang === "th-TH") ||
+      voices.find((v) => v.lang.startsWith("th")) ||
+      voices.find((v) => v.lang === "en-US") ||
+      voices[0];
+
+    const utterance = new SpeechSynthesisUtterance(thaiText);
+    utterance.voice = thaiVoice;
+    utterance.lang = "th-TH";
+    utterance.rate = 1;
+    utterance.pitch = 1;
+    synth.speak(utterance);
+  };
+
+  //ฟังก์ชันจัดการเมื่อ users คลิกเมาสเพื่อให้เริ่มการแปลงรูป
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsDragging(true);
@@ -49,6 +89,7 @@ export default function page() {
     }
   };
 
+  //ฟังก์ชันจัดการเมื่อ users คลิกเมาสเพื่อเลื่อนรูปโดยจัดตำแหนตามค่า x, y ของเมาส
   const handleMouseMove = (e: MouseEvent) => {
     if (!isDragging) return;
 
@@ -105,7 +146,7 @@ export default function page() {
       document.removeEventListener("touchend", handleMouseUp);
     };
   }, [isDragging]);
-  
+
   //ดึงข้อมูลคําศัพท์
   useEffect(() => {
     async function fetchVocab() {
@@ -323,17 +364,23 @@ export default function page() {
               <>
                 <img
                   src={vocabs.vocab_image_url || "/placeholder.png"}
-                  className="w-40 h-40 object-cover  mb-6 border-4 border-white"
-                  width={160} // ปรับให้ match ขนาดจริง
-                  height={160}
+                  className="w-40 h-40 object-cover mb-6 border-4 border-white"
                   alt={vocabs.english}
                 />
                 <h1 className="text-5xl font-extrabold text-gray-800 uppercase mb-2">
                   {vocabs.english}
                 </h1>
-                <h1 className="text-xl font-medium text-gray-600">
+                <h1 className="text-xl font-medium text-gray-600 mb-4">
                   {vocabs.spelling}
                 </h1>
+
+                {/* ปุ่มพูดออกเสียง */}
+                <button
+                  onClick={() => handleSpeak(vocabs.english)}
+                  className="px-6 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition mb-4 cursor-pointer"
+                >
+                  🔊 ฟังเสียง
+                </button>
               </>
             ) : (
               <h1>Loading...</h1>
