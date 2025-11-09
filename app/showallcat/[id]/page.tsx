@@ -159,7 +159,7 @@ export default function page() {
                             alt="logo"
                             width={50}
                             height={50}
-                            className="mx-auto rounded-full border-2 border-indigo-200 shadow-sm"
+                            className="mx-auto border-2 "
                           />
                         ) : (
                           <div className="w-12 h-12 mx-auto bg-gray-200 rounded-full flex items-center justify-center text-gray-500">

@@ -182,7 +182,7 @@ export default function page() {
                   <img
                     src={preview_file}
                     alt="preview"
-                    className="w-24 h-24 rounded-lg object-cover border"
+                    className="w-24 h-24 object-cover "
                   />
                 )}
               </div>
