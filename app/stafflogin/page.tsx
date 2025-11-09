@@ -61,8 +61,9 @@ export default function page() {
         console.log("ไม่พบผู้ใช้ที่ตรงกับอีเมลหรือรหัสผ่านที่กรอก");
         return;
       }
-
-      router.push(`/showalluser`);
+      
+      localStorage.setItem("staff_id", data.staff_id);
+      router.push(`/staffdashboard/ ${data.staff_id}`);
     } catch (ex) {
       console.error("เกิดข้อผิดพลาดในการเข้าสู่ระบบ:", ex);
       alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ กรุณาลองใหม่อีกครั้ง");

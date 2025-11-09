@@ -105,7 +105,8 @@ export default function page() {
       document.removeEventListener("touchend", handleMouseUp);
     };
   }, [isDragging]);
-
+  
+  //ดึงข้อมูลคําศัพท์
   useEffect(() => {
     async function fetchVocab() {
       if (!vocabId) {

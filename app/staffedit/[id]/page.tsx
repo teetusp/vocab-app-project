@@ -2,15 +2,21 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
-import NavBarUser from "../../../components/NavBarUser";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Footer from "../../../components/Footer";
 import { supabase } from "@/lib/supabaseClient";
 import SweetAlert from "sweetalert2";
-type User = {
+import NavBarStaff from "@/components/NavBarStaff";
+
+type Staff = {
   id: string;
   fullname: string;
-  user_image_url: string;
+  email: string;
+  birthdate: string;
+  password: string;
+  gender: string;
+  phonenumber: string;
+  staff_image_url: string;
 };
 
 export default function page() {
@@ -18,13 +24,14 @@ export default function page() {
   const id = useParams().id;
 
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<Staff | null>(null);
 
   const [fullname, setFullname] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [birthdate, setBirthdate] = useState<string>("");
-  const [image_flie, setImageFile] = useState<File | null>(null);
+  const [phonenumber, setPhonenumber] = useState<string>("");
+  const [image_file, setImageFile] = useState<File | null>(null);
   const [preview_file, setPreviewFile] = useState<string | null>(null);
   const [old_image_file, setOldImageFile] = useState<string | null>(null);
 
@@ -32,9 +39,9 @@ export default function page() {
     //ดึงข้อมูลจาก supabase
     async function fetchData() {
       const { data, error } = await supabase
-        .from("user_tb")
+        .from("staff_tb")
         .select("*")
-        .eq("user_id", id)
+        .eq("staff_id", id)
         .single();
 
       if (error) {
@@ -48,49 +55,11 @@ export default function page() {
       setEmail(data.email);
       setPassword(data.password);
       setBirthdate(data.birthdate);
+      setPhonenumber(data.phonenumber);
       setPreviewFile(data.user_image_url);
     }
 
     fetchData();
-  }, []);
-
-  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า dashboard + supabase
-  useEffect(() => {
-    async function fetchUser() {
-      try {
-        const userId = localStorage.getItem("user_id");
-        if (!userId) {
-          console.error("ไม่พบ userId ใน localStorage");
-          return;
-        }
-
-        // ดึงข้อมูลผู้ใช้จากตาราง user_tb
-        const { data, error } = await supabase
-          .from("user_tb")
-          .select("user_id, fullname, user_image_url")
-          .eq("user_id", userId)
-          .single();
-
-        if (error) {
-          console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:", error.message);
-          return;
-        }
-
-        if (data) {
-          setUser(
-            {
-              id: data.user_id,
-              fullname: data.fullname,
-              user_image_url: data.user_image_url,
-            }
-          );
-        }
-      } catch (ex) {
-        console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ Supabase:", ex);
-      }
-    }
-
-    fetchUser();
   }, []);
 
   //ฟังก์ชันเลือกรูปภาพเพื่อพรีวิวก่อนที่จะอัปโหลด
@@ -129,13 +98,13 @@ export default function page() {
     let image_url = preview_file || "";
 
     //ตรวจสอบว่ามีการเลือกรูปภาพเพื่อที่จะอัปโหลดหรือไม่
-    if (image_flie) {
+    if (image_file) {
       //ลบรูปภาพเก่าออกใน supabase เพื่ออัปโหลดรูปใหม่
       if (old_image_file != "") {
         //เอาเฉพาะชื่อของรูปภาพจาก image_url
         const image_name = image_url.split("/").pop() as string;
         const { data, error } = await supabase.storage
-          .from("user_bk")
+          .from("staff_bk")
           .remove([image_name]);
 
         if (error) {
@@ -146,11 +115,11 @@ export default function page() {
       }
 
       //กรณีมีการเลือกรูป ก็จะทำการอัปโหลดรูปไปยัง storage ของ supabase
-      const new_image_flie_name = `${Date.now()}-${image_flie?.name}`;
+      const new_image_file_name = `${Date.now()}-${image_file?.name}`;
       //อัปโหลดรูป
       const { data, error } = await supabase.storage
-        .from("user_bk")
-        .upload(new_image_flie_name, image_flie);
+        .from("staff_bk")
+        .upload(new_image_file_name, image_file);
 
       if (error) {
         alert("พบข้อผิดพลาดในการอัปโหลดรูปภาพ กรุณาลองใหม่อีกครั้ง");
@@ -159,22 +128,23 @@ export default function page() {
       } else {
         // get url ของรูปที่
         const { data } = supabase.storage
-          .from("user_bk")
-          .getPublicUrl(new_image_flie_name);
+          .from("staff_bk")
+          .getPublicUrl(new_image_file_name);
         image_url = data.publicUrl;
       }
     }
     //---------แก้ไขลงตาราง supabase---------
     const { data, error } = await supabase
-      .from("user_tb")
+      .from("staff_tb")
       .update({
         fullname: fullname,
         email: email,
         password: password,
         birthdate: birthdate,
+        phonenumber: phonenumber,
         user_image_url: image_url,
       })
-      .eq("user_id", id);
+      .eq("staff_id", id);
 
     //ตรวจสอบ
     if (error) {
@@ -194,6 +164,7 @@ export default function page() {
       setEmail("");
       setPassword("");
       setBirthdate("");
+      setPhonenumber("");
       setImageFile(null);
       setPreviewFile(null);
       image_url = "";
@@ -202,11 +173,10 @@ export default function page() {
     }
   }
 
-  
   return (
     <div className="min-h-screen bg-pink-100">
       {/* ส่วน NavBar */}
-      <NavBarUser />
+      <NavBarStaff />
       {/* ส่วนแก้ไขข้อมูลส่วนตัว */}
       <div className="p-6 md:p-10">
         <div className="max-w-4xl mx-auto">
@@ -259,7 +229,7 @@ export default function page() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg pr-12" // เพิ่ม padding ขวา
-                      placeholder="Enter new password (optional)"
+                      placeholder="Enter new password"
                     />
                     {/* ปุ่มสลับการแสดงรหัสผ่าน */}
                     <button
@@ -277,6 +247,21 @@ export default function page() {
                       )}
                     </button>
                   </div>
+                </label>
+              </div>
+
+              {/* Phonenumber */}
+              <div className="mb-6">
+                <label className="block">
+                  <span className="text-gray-700 font-medium">
+                    หมายเลขโทรศัพท์ (Phone Number)
+                  </span>
+                  <input
+                    type="text"
+                    value={email}
+                    onChange={(e) => setPhonenumber(e.target.value)}
+                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
+                  />
                 </label>
               </div>
 

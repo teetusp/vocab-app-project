@@ -55,8 +55,9 @@ export default function page() {
   }, []);
 
   const handleClickBack = () => {
-    router.back();
+    router.push(`/dashboardvocab/${user?.id}`);
   };
+  
   return (
     <div>
       <div className="min-h-screen bg-pink-100">

@@ -184,10 +184,11 @@ export default function () {
               className="w-full px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-xl hover:bg-gray-700 transition duration-150 transform hover:scale-105 text-lg"
             >
               <IoIosArrowBack className="text-xl inline-block mr-2" />{" "}
-              กลับไปหน้าหลัก
+              กลับไปหน้า Quiz
             </button>
           </div>
         </div>
+        <Footer />
       </div>
     );
   }

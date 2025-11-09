@@ -1,5 +1,5 @@
 "use client";
-import react from "react";
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import rocket from "../assets/rocket.png";
@@ -11,32 +11,33 @@ import { CiLogout } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { supabase } from "@/lib/supabaseClient";
 
-type User = {
-  id: string;
+type Staff = {
+  staff_id: string;
   fullname: string;
-  user_image_url: string;
+  staff_image_url: string;
 };
-export default function page() {
+
+export default function NavBarStaff() {
   const router = useRouter();
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [user, setUser] = useState<User | null>(null);
+  const [staff, setStaff] = useState<Staff | null>(null);
 
-  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
+  // ดึงข้อมูลผู้ดูแลระบบแบบ 1-1 จากหน้า login + supabase
   useEffect(() => {
-    async function fetchUser() {
+    async function fetchStaff() {
       try {
-        const userId = localStorage.getItem("user_id");
-        if (!userId) {
-          console.error("ไม่พบ userId ใน localStorage");
+        const staffId = localStorage.getItem("staff_id");
+        if (!staffId) {
+          console.error("ไม่พบ staff_id ใน localStorage");
           return;
         }
 
         // ดึงข้อมูลผู้ใช้จากตาราง user_tb
         const { data, error } = await supabase
-          .from("user_tb")
-          .select("user_id, fullname, user_image_url")
-          .eq("user_id", userId)
+          .from("staff_tb")
+          .select("staff_id, fullname, staff_image_url")
+          .eq("staff_id", staffId)
           .single();
 
         if (error) {
@@ -45,10 +46,10 @@ export default function page() {
         }
 
         if (data) {
-          setUser({
-            id: data.user_id,
+          setStaff({
+            staff_id: data.staff_id,
             fullname: data.fullname,
-            user_image_url: data.user_image_url,
+            staff_image_url: data.staff_image_url,
           });
         }
       } catch (ex) {
@@ -56,34 +57,33 @@ export default function page() {
       }
     }
 
-    fetchUser();
+    fetchStaff();
   }, []);
 
   async function handleClickSignOut() {
     console.log("ออกกำลังออกจากระบบ...");
-    localStorage.removeItem("user_id");
+    localStorage.removeItem("staff_id");
     console.log("localStorage ลบเรียบร้อย");
     //redirect to home page
     router.push("/");
   }
   const handleClickEditProfile = () => {
-    if (user?.id) {
-      router.push(`/edituser/${user?.id}`);
-      console.log("Go to edit user:", user?.id);
+    if (staff?.staff_id) {
+      router.push(`/staffedit/${staff?.staff_id}`);
+      console.log("Go to edit user:", staff?.staff_id);
     } else {
       console.error("ไม่พบ user id");
     }
   };
 
   const handleClickViewProfile = () => {
-    if (user?.id) {
-      router.push(`/userprofile/${user?.id}`);
-      console.log("Go to view profile user:", user?.id);
+    if (staff?.staff_id) {
+      router.push(`/staffprofile/${staff?.staff_id}`);
+      console.log("Go to view profile user:", staff?.staff_id);
     } else {
       console.error("ไม่พบ user id");
     }
   };
-
   return (
     <div>
       {/* ส่วน NavBar */}
@@ -92,7 +92,7 @@ export default function page() {
           <div className="flex justify-between items-center h-20">
             {/* โลโก้/ชื่อแอป */}
             <div
-              onClick={() => window.location.reload()}
+              onClick={() => router.push(`/staffdashboard/${staff?.staff_id}`)}
               className="flex items-center space-x-2 cursor-pointer"
             >
               <Image src={rocket} alt="Logo" className="w-10 h-10 mr-2" />
@@ -101,24 +101,6 @@ export default function page() {
                 <span className="text-red-500">Vocab</span>
               </h1>
             </div>
-            <Link
-              href={`/dashboard/${user?.id}`}
-              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
-            >
-              Dashbaord
-            </Link>
-            <Link
-              href={`/userhistory/${user?.id}`}
-              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
-            >
-              History
-            </Link>
-            <Link
-              href={`/usertest/${user?.id}`}
-              className="text-xl font-extrabold text-indigo-900 hover:text-indigo-500 transition duration-150"
-            >
-              Quiz
-            </Link>
             <div className="relative ">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
@@ -127,13 +109,13 @@ export default function page() {
                 {/* รูปภาพโปรไฟล์ (Placeholder) */}
                 <img
                   className="w-8 h-8 rounded-full object-cover "
-                  src={user?.user_image_url}
+                  src={staff?.staff_image_url}
                   width={32}
                   height={32}
                   alt="User profile"
                 />
                 <span className="hidden md:inline font-medium text-gray-700">
-                  {user?.fullname}
+                  {staff?.fullname}
                 </span>
                 <IoIosArrowDropdown
                   className={`w-5 h-5 text-gray-500 transition-transform ${

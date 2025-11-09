@@ -15,7 +15,7 @@ import { FaEyeSlash } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { supabase } from "../../lib/supabaseClient";
 import { useRouter } from "next/navigation";
-
+import { FaPhone } from "react-icons/fa";
 export default function page() {
   const router = useRouter();
 
@@ -23,7 +23,7 @@ export default function page() {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [birthdate, setBirthdate] = useState<string>("");
-  const [status, setStatus] = useState<boolean>(false);
+  const [phonenumber, setPhoneNumber] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [gender, setGender] = useState<string>("male");
 
@@ -131,7 +131,7 @@ export default function page() {
       password: password,
       birthdate: birthdate,
       gender: gender,
-      status : false,
+      phonenumber: phonenumber,
       staff_image_url: image_url,
     });
     //ตรวจสอบ
@@ -153,6 +153,7 @@ export default function page() {
       setPassword("");
       setBirthdate("");
       setGender("");
+      setPhoneNumber("");
       setStaffImageFile(null);
       setStaffImagePreview(null);
       image_url = "";
@@ -278,6 +279,24 @@ export default function page() {
                 </button>
               </div>
             </div>
+
+            {/* Phone Number Input */}
+            <div>
+              <label className="block text-gray-700 font-semibold mb-2">
+                หมายเลขโทรศัพท์
+              </label>
+              <div className="relative">
+                <FaPhone className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="กรอกหมายเลขโทรศัพท์"
+                  value={phonenumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 text-gray-700"
+                />
+              </div>
+            </div>
+
 
             {/* Date of Birth Input */}
             <div>
