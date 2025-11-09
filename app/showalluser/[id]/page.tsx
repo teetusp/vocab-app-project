@@ -19,11 +19,51 @@ type User = {
   user_image_url: string;
 };
 
+type Staff = {
+  staff_id: string;
+  fullname: string;
+  staff_image_url: string;
+};
+
 export default function page() {
   const router = useRouter();
-
-  const [staff, setStaff] = useState<{ staff_id: number } | null>(null);
+  const [staff, setStaff] = useState<Staff | null>(null);
   const [users, setUsers] = useState<User[]>([]);
+
+  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
+  useEffect(() => {
+    async function fetchStaff() {
+      try {
+        const staffId = localStorage.getItem("staff_id");
+        if (!staffId) {
+          console.error("ไม่พบ staff_id ใน localStorage");
+          return;
+        }
+
+        // ดึงข้อมูลผู้ใช้จากตาราง staff
+        const { data, error } = await supabase
+          .from("staff_tb")
+          .select("staff_id, fullname, staff_image_url")
+          .eq("staff_id", staffId)
+          .single();
+
+        if (error) {
+          console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:", error.message);
+          return;
+        }
+
+        setStaff({
+          staff_id: data.staff_id,
+          fullname: data.fullname,
+          staff_image_url: data.staff_image_url,
+        });
+      } catch (ex) {
+        console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ Supabase:", ex);
+      }
+    }
+
+    fetchStaff();
+  }, []);
 
   //เมื่อเพจถูกโหลด ให้ดึงข้อมูลจาก supabase เพื่อมาแสดงผลที่หน้าเพจ
   useEffect(() => {
@@ -51,7 +91,7 @@ export default function page() {
   }, []);
 
   const handleClickBack = () => {
-    router.back();
+    router.push(`/staffdashboard/${staff?.staff_id}`);
   };
 
   async function handleDeleteTaskClick(id: number, image_url: string) {

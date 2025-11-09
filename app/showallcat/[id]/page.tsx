@@ -84,7 +84,7 @@ export default function page() {
   }, []);
 
   const handleClickBack = () => {
-    router.back();
+    router.push(`/staffdashboard/${staff?.staff_id}`);
   };
 
   const handleAddVocab = () => {

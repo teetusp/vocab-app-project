@@ -130,17 +130,6 @@ export default function page() {
   //ฟังก์ชันอัปโหลดรูปภาพ และบันทึกลงฐานข้อมูลที่ Supabase
   async function handleUploadAndUpdate(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-
-    if (!english.trim() || !thai.trim() || !spelling.trim() || !image_file) {
-      SweetAlert.fire({
-        icon: "warning",
-        iconColor: "#E30707",
-        title: "กรุณากรอกข้อมูลให้ครบถ้วน",
-        confirmButtonText: "ตกลง",
-        confirmButtonColor: "#3085D6",
-      });
-      return;
-    }
     //สร้างตัวแปรเพื่อเก็บ url ของรูปภาพที่อัปโหลด เพื่อจะเอาไปบันทึกตาราง
     let image_url = preview_file || "";
 
@@ -199,7 +188,13 @@ export default function page() {
       console.log(error.message);
       return;
     } else {
-      alert("บันทึกข้อมูลเรียบร้อย");
+      SweetAlert.fire({
+        icon: "success",
+        title: "แก้ไขข้อมูลสําเร็จ",
+        text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อยแล้ว",
+        confirmButtonText: "ตกลง",
+        confirmButtonColor: "#3085D6",
+      })
       //เคลียร์ข้อมูล
       setEnglish("");
       setSpelling("");
