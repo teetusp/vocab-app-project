@@ -98,9 +98,9 @@ export default function page() {
               alt="Logo"
               className="w-10 h-10 drop-shadow-md"
             />
-            <h1 className="text-2xl font-extrabold tracking-tight text-white">
+            <h1 className="text-2xl font-black text-indigo-600 tracking-wide">
               <span className="text-yellow-300">Card</span>{" "}
-              <span className="text-white">Vocab</span>
+              <span className="text-red-600">Vocab</span>
             </h1>
           </div>
 
@@ -116,7 +116,7 @@ export default function page() {
               href={`/dashboardvocab/${user?.id}`}
               className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
             >
-              Vocabulary
+              Vocabular
             </Link>
             <Link
               href={`/userhistory/${user?.id}`}

@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -6,13 +7,16 @@ import card from "../assets/card.png";
 import follow from "../assets/follow.png";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBarHome";
+import { useState, useEffect } from "react";
+
 
 export default function page() {
+  
   return (
-    <div >
+    <div>
       {/* Navigation bar */}
       <NavBar />
-
+      {/* Dark mode toggle button */}
       <div>
         {/* Hero Section */}
         <div className="relative bg-yellow-200/80 pt-16 pb-28 md:pt-28 md:pb-36 overflow-hidden">

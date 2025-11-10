@@ -61,7 +61,7 @@ export default function page() {
         console.log("ไม่พบผู้ใช้ที่ตรงกับอีเมลหรือรหัสผ่านที่กรอก");
         return;
       }
-      
+
       localStorage.setItem("staff_id", data.staff_id);
       router.push(`/staffdashboard/ ${data.staff_id}`);
     } catch (ex) {
@@ -73,18 +73,22 @@ export default function page() {
   return (
     <div>
       {/* --- Navbar --- */}
-      <div className="sticky bg-blue-200/90 backdrop-blur-sm shadow-md">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* โลโก้/ชื่อแอป */}
             <div
-              onClick={() => (window.location.href = "/")}
-              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => router.push("/")}
+              className="flex items-center space-x-2 cursor-pointer transform transition-transform hover:scale-105"
             >
-              <Image src={rocket} alt="Logo" className="w-10 h-10 mr-2" />
+              <Image
+                src={rocket}
+                alt="Logo"
+                className="w-10 h-10 drop-shadow-md"
+              />
               <h1 className="text-2xl font-black text-indigo-600 tracking-wide">
-                <span className="text-yellow-500">Card</span>{" "}
-                <span className="text-red-500">Vocab</span>
+                <span className="text-yellow-300">Card</span>{" "}
+                <span className="text-red-600">Vocab</span>
               </h1>
             </div>
           </div>
