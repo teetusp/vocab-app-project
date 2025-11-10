@@ -83,7 +83,7 @@ export default function page() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       {/* Navbar */}
       <NavBarUser />
 

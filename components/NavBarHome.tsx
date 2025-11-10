@@ -10,7 +10,7 @@ export default function NavBar() {
   
   const router = useRouter();
   return (
-    <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-lg">
+    <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-300 to-pink-100 shadow-lg">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-20">
           {/* โลโก้/ชื่อแอป */}
@@ -32,7 +32,7 @@ export default function NavBar() {
           <div className="hidden md:flex space-x-8 items-center">
             <Link
               href="/about"
-              className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
+              className="text-lg font-semibold text-gray-900 hover:text-yellow-300 transition-colors duration-200"
             >
               About Us
             </Link>

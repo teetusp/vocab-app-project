@@ -52,7 +52,12 @@ export default function page() {
   async function handleUploadAndSave(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     //ตรวจสอบการกรอกข้อมูล
-    if (fullname.trim() == '' || email.trim() == '' || password.trim() == '' || birthdate == '' ) {
+    if (
+      fullname.trim() == "" ||
+      email.trim() == "" ||
+      password.trim() == "" ||
+      birthdate == ""
+    ) {
       SweetAlert.fire({
         icon: "warning",
         iconColor: "#E30707",
@@ -163,7 +168,7 @@ export default function page() {
   return (
     <div>
       {/* --- Navbar --- */}
-      <div className="sticky bg-blue-200/90 backdrop-blur-sm shadow-md">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-300 to-pink-100 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* โลโก้/ชื่อแอป */}
@@ -182,7 +187,7 @@ export default function page() {
       </div>
 
       {/* --- Registration Page --- */}
-      <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-yellow-300 p-4 sm:p-8 flex items-center justify-center font-inter">
+      <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-300 to-purple-400 p-4 sm:p-8 flex items-center justify-center ">
         {/* Container หลักที่มีสีสันและเงา */}
         <div className="w-full max-w-lg bg-white p-6 sm:p-10 rounded-3xl  transform transition duration-500 ">
           {/* ส่วนหัวและปุ่มย้อนกลับ */}
@@ -285,8 +290,9 @@ export default function page() {
                   placeholder="เลือก"
                   onChange={(e) => setBirthdate(e.target.value)}
                   // ใช้ Tailwind utility เพื่อให้ placeholder หายไปเมื่อเลือกวันที่แล้ว
-                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${birthdate ? "text-gray-700" : "text-gray-400"
-                    }`}
+                  className={`w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-red-300 focus:border-red-500 outline-none transition duration-150 ${
+                    birthdate ? "text-gray-700" : "text-gray-400"
+                  }`}
                 />
               </div>
             </div>

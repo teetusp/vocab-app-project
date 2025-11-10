@@ -47,7 +47,7 @@ export default function page() {
         SweetAlert.fire({
           icon: "error",
           iconColor: "#E30707",
-          title: "อีเมลหรือรหัสผ่านไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง",
+          title: "อีเมลหรือรหัสผ่านไม่ถูกต้อง",
           showConfirmButton: true,
           confirmButtonText: "ตกลง",
           confirmButtonColor: "#3085D6",
@@ -73,7 +73,7 @@ export default function page() {
   return (
     <div>
       {/* --- Navbar --- */}
-      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-lg">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-300 to-pink-100 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* โลโก้/ชื่อแอป */}
@@ -95,7 +95,7 @@ export default function page() {
         </div>
       </div>
       {/* --- Login Page --- */}
-      <div className="min-h-screen bg-gradient-to-br from-yellow-300 via-pink-300 to-purple-400 p-4 sm:p-8 flex items-center justify-center font-inter">
+      <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-300 to-purple-400 p-4 sm:p-8 flex items-center justify-center">
         {/* Container หลักที่มีสีสันและเงา */}
         <div className="w-full max-w-md bg-white p-6 sm:p-10 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.15)] transform transition duration-500 hover:shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
           {/* ส่วนปุ่มย้อนกลับ */}

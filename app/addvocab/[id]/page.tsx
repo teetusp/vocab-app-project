@@ -189,10 +189,10 @@ export default function page() {
   }
 
   return (
-    <div className="min-h-screen bg-pink-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       <NavBarStaff />
 
-      <div className="p-6 md:p-10">
+      <div className="p-6 md:p-10 max-w-4xl mx-auto w-full max-w-6xl">
         <div className="max-w-4xl mx-auto">
           <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
             เพิ่มคำศัพท์ใหม่
@@ -202,7 +202,7 @@ export default function page() {
             <form onSubmit={handleUploadAndSave} className="space-y-6">
               {/* คำอังกฤษ */}
               <div>
-                <label className="block mb-2 font-medium">คำอังกฤษ</label>
+                <label className="block mb-2 font-medium">คำอังกฤษ *</label>
                 <input
                   type="text"
                   value={english}
@@ -214,7 +214,7 @@ export default function page() {
 
               {/* คำอ่าน */}
               <div>
-                <label className="block mb-2 font-medium">คำอ่าน</label>
+                <label className="block mb-2 font-medium">คำอ่าน *</label>
                 <input
                   type="text"
                   value={spelling}
@@ -226,7 +226,7 @@ export default function page() {
 
               {/* คำไทย */}
               <div>
-                <label className="block mb-2 font-medium">คำไทย</label>
+                <label className="block mb-2 font-medium">คำไทย *</label>
                 <input
                   type="text"
                   value={thai}
@@ -238,7 +238,7 @@ export default function page() {
 
               {/* ประเภทคำ */}
               <div>
-                <label className="block mb-2 font-medium">ประเภทคำ</label>
+                <label className="block mb-2 font-medium">ประเภทคำ *</label>
                 <select
                   value={
                     selectedCategoryId ? selectedCategoryId.toString() : ""
@@ -272,7 +272,7 @@ export default function page() {
                   htmlFor="FileInput"
                   className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
                 >
-                  เลือกรูปภาพ
+                  เลือกรูปภาพ *
                 </label>
                 {preview_file && (
                   <img

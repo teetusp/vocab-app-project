@@ -148,7 +148,7 @@ export default function page() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       {/* NavBar */}
       <div className="relative z-40">
         <NavBarUser />

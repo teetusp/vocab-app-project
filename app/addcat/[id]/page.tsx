@@ -12,7 +12,6 @@ type Staff = {
   staff_image_url: string;
 };
 
-
 export default function page() {
   const router = useRouter();
   const params = useParams();
@@ -25,7 +24,6 @@ export default function page() {
   const [category_name, setCategoryName] = useState<string>("");
   const [image_file, setImageFile] = useState<File | null>(null);
   const [preview_file, setPreviewFile] = useState<string | null>(null);
-  
 
   // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
   useEffect(() => {
@@ -140,71 +138,69 @@ export default function page() {
   }
 
   return (
-    <div className="min-h-screen bg-pink-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       <NavBarStaff />
 
-      <div className="p-6 md:p-10">
-        <div className="max-w-4xl mx-auto">
-          <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
-            เพิ่มประเภทคําใหม่
-          </h1>
+      <div className="p-6 md:p-10 max-w-4xl mx-auto w-full max-w-6xl">
+        <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
+          เพิ่มประเภทคําใหม่
+        </h1>
 
-          <div className="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-indigo-300/50">
-            <form onSubmit={handleUploadAndSave} className="space-y-6">
-              {/* คำอังกฤษ */}
-              <div>
-                <label className="block mb-2 font-medium">ประเภทคำ</label>
-                <input
-                  type="text"
-                  value={category_name}
-                  onChange={(e) => setCategoryName(e.target.value)}
-                  className="border rounded p-2 w-full"
-                  placeholder="เช่น ผลไม้"
+        <div className="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-indigo-300/50">
+          <form onSubmit={handleUploadAndSave} className="space-y-6">
+            {/* คำอังกฤษ */}
+            <div>
+              <label className="block mb-2 font-medium">ประเภทคำ *</label>
+              <input
+                type="text"
+                value={category_name}
+                onChange={(e) => setCategoryName(e.target.value)}
+                className="border rounded p-2 w-full"
+                placeholder="เช่น ผลไม้"
+              />
+            </div>
+
+            {/* รูปภาพ */}
+            <div className="flex items-center space-x-4">
+              <input
+                type="file"
+                id="FileInput"
+                className="hidden"
+                onChange={handleSelectImagePreview}
+                accept="image/*"
+              />
+              <label
+                htmlFor="FileInput"
+                className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
+              >
+                เลือกรูปภาพ *
+              </label>
+              {preview_file && (
+                <img
+                  src={preview_file}
+                  alt="preview"
+                  className="w-24 h-24 object-cover "
                 />
-              </div>
+              )}
+            </div>
 
-              {/* รูปภาพ */}
-              <div className="flex items-center space-x-4">
-                <input
-                  type="file"
-                  id="FileInput"
-                  className="hidden"
-                  onChange={handleSelectImagePreview}
-                  accept="image/*"
-                />
-                <label
-                  htmlFor="FileInput"
-                  className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
-                >
-                  เลือกรูปภาพ
-                </label>
-                {preview_file && (
-                  <img
-                    src={preview_file}
-                    alt="preview"
-                    className="w-24 h-24 object-cover "
-                  />
-                )}
-              </div>
-
-              {/* ปุ่ม */}
-              <div className="flex justify-between gap-4">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="w-1/2 py-3 rounded-xl text-lg font-bold text-gray-900 bg-gray-400 hover:bg-gray-500"
-                >
-                  ยกเลิก
-                </button>
-                <button
-                  type="submit"
-                  className="w-1/2 py-3 rounded-xl text-lg font-bold text-gray-900 bg-green-400 hover:bg-green-500"
-                >
-                  บันทึก
-                </button>
-              </div>
-            </form>
-          </div>
+            {/* ปุ่ม */}
+            <div className="flex justify-between gap-4">
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="w-1/2 py-3 rounded-xl text-lg font-bold text-gray-900 bg-gray-400 hover:bg-gray-500"
+              >
+                ยกเลิก
+              </button>
+              <button
+                type="submit"
+                className="w-1/2 py-3 rounded-xl text-lg font-bold text-gray-900 bg-green-400 hover:bg-green-500"
+              >
+                บันทึก
+              </button>
+            </div>
+          </form>
         </div>
       </div>
 

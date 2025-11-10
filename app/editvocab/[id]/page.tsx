@@ -194,7 +194,7 @@ export default function page() {
         text: "ข้อมูลของคุณถูกแก้ไขเรียบร้อยแล้ว",
         confirmButtonText: "ตกลง",
         confirmButtonColor: "#3085D6",
-      })
+      });
       //เคลียร์ข้อมูล
       setEnglish("");
       setSpelling("");
@@ -208,125 +208,121 @@ export default function page() {
   }
 
   return (
-    <div className="min-h-screen bg-pink-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       {/* ส่วน NavBar */}
       <NavBarStaff />
       {/* ส่วนแก้ไขข้อมูลส่วนตัว */}
-      <div className="p-6 md:p-10">
-        <div className="max-w-4xl mx-auto">
-          {/* Header */}
-          <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
-            แก้ไขข้อมูลคำศัพท์
-          </h1>
-          <div className="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-indigo-300/50">
-            <form onSubmit={handleUploadAndUpdate} className="space-y-6">
-              {/* ชื่อ  */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">ชื่ออังกฤษ</span>
-                  <input
-                    type="text"
-                    value={english}
-                    onChange={(e) => setEnglish(e.target.value)}
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                    placeholder="Enter your full name"
-                  />
-                </label>
-              </div>
-
-              {/* คําอ่าน */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">คำอ่าน</span>
-                  <input
-                    type="text"
-                    value={spelling}
-                    onChange={(e) => setSpelling(e.target.value)}
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                  />
-                </label>
-              </div>
-
-              {/* ชื่อไทย */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">ชื่อไทย</span>
-                  <div className="relative mt-1">
-                    <input
-                      type="te" // สลับประเภท input
-                      value={thai}
-                      onChange={(e) => setThai(e.target.value)}
-                      className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                    />
-                  </div>
-                </label>
-              </div>
-
-              {/* ประเภทคำ */}
-              <div>
-                <label className="block mb-2 font-medium">ประเภทคำ</label>
-                <select
-                  value={
-                    selectedCategoryId ? selectedCategoryId.toString() : ""
-                  }
-                  onChange={(e) =>
-                    setSelectedCategoryId(
-                      e.target.value ? Number(e.target.value) : null
-                    )
-                  }
-                  className="border rounded p-2 w-full"
-                >
-                  <option value="">-- เลือกประเภทคำ --</option>
-                  {categories.map((cat) => (
-                    <option key={cat.cat_id} value={cat.cat_id}>
-                      {cat.category_name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              {/*  Vocab Image */}
-              <div className="mt-1 flex items-center space-x-4">
+      <div className="p-6 md:p-10 max-w-4xl mx-auto w-full max-w-6xl">
+        {/* Header */}
+        <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
+          แก้ไขข้อมูลคำศัพท์
+        </h1>
+        <div className="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-indigo-300/50">
+          <form onSubmit={handleUploadAndUpdate} className="space-y-6">
+            {/* ชื่อ  */}
+            <div className="mb-6">
+              <label className="block">
+                <span className="text-gray-700 font-medium">ชื่ออังกฤษ</span>
                 <input
-                  type="file"
-                  id="FileInput"
-                  className="hidden"
-                  onChange={handleSelectImagePreview}
-                  accept="image/*"
+                  type="text"
+                  value={english}
+                  onChange={(e) => setEnglish(e.target.value)}
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
+                  placeholder="Enter your full name"
                 />
-                <label
-                  htmlFor="FileInput"
-                  className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
-                >
-                  เลือกรูปภาพ
-                </label>
-                {preview_file && (
-                  <img
-                    src={preview_file}
-                    alt="preview"
-                    className="w-24 h-24 rounded-lg object-cover "
-                  />
-                )}
-              </div>
+              </label>
+            </div>
 
-              {/* Submit Button */}
-              <div className="flex justify-between items-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-gray-400 hover:bg-gray-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
-                >
-                  ยกเลิก
-                </button>
-                <button
-                  type="submit"
-                  className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-green-400 hover:bg-green-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
-                >
-                  บันทึกการเปลี่ยนแปลง
-                </button>
-              </div>
-            </form>
-          </div>
+            {/* คําอ่าน */}
+            <div className="mb-6">
+              <label className="block">
+                <span className="text-gray-700 font-medium">คำอ่าน</span>
+                <input
+                  type="text"
+                  value={spelling}
+                  onChange={(e) => setSpelling(e.target.value)}
+                  className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
+                />
+              </label>
+            </div>
+
+            {/* ชื่อไทย */}
+            <div className="mb-6">
+              <label className="block">
+                <span className="text-gray-700 font-medium">ชื่อไทย</span>
+                <div className="relative mt-1">
+                  <input
+                    type="te" // สลับประเภท input
+                    value={thai}
+                    onChange={(e) => setThai(e.target.value)}
+                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
+                  />
+                </div>
+              </label>
+            </div>
+
+            {/* ประเภทคำ */}
+            <div>
+              <label className="block mb-2 font-medium">ประเภทคำ</label>
+              <select
+                value={selectedCategoryId ? selectedCategoryId.toString() : ""}
+                onChange={(e) =>
+                  setSelectedCategoryId(
+                    e.target.value ? Number(e.target.value) : null
+                  )
+                }
+                className="border rounded p-2 w-full"
+              >
+                <option value="">-- เลือกประเภทคำ --</option>
+                {categories.map((cat) => (
+                  <option key={cat.cat_id} value={cat.cat_id}>
+                    {cat.category_name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/*  Vocab Image */}
+            <div className="mt-1 flex items-center space-x-4">
+              <input
+                type="file"
+                id="FileInput"
+                className="hidden"
+                onChange={handleSelectImagePreview}
+                accept="image/*"
+              />
+              <label
+                htmlFor="FileInput"
+                className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
+              >
+                เลือกรูปภาพ
+              </label>
+              {preview_file && (
+                <img
+                  src={preview_file}
+                  alt="preview"
+                  className="w-24 h-24 rounded-lg object-cover "
+                />
+              )}
+            </div>
+
+            {/* Submit Button */}
+            <div className="flex justify-between items-center space-x-4">
+              <button
+                type="button"
+                onClick={() => router.back()}
+                className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-gray-400 hover:bg-gray-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
+              >
+                ยกเลิก
+              </button>
+              <button
+                type="submit"
+                className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-green-400 hover:bg-green-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
+              >
+                บันทึกการเปลี่ยนแปลง
+              </button>
+            </div>
+          </form>
         </div>
       </div>
       <Footer />

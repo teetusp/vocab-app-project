@@ -203,7 +203,7 @@ export default function page() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 flex flex-col">
+    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
       <NavBarUser />
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-12">

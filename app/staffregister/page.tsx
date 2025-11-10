@@ -171,7 +171,7 @@ export default function page() {
   return (
     <div>
       {/* --- Navbar --- */}
-      <div className="sticky bg-blue-200/90 backdrop-blur-sm shadow-md">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-300 to-pink-100 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
             {/* โลโก้/ชื่อแอป */}
@@ -190,7 +190,7 @@ export default function page() {
       </div>
 
       {/* --- Registration Page --- */}
-      <div className="min-h-screen bg-gradient-to-br from-purple-400 via-pink-300 to-yellow-300 p-4 sm:p-8 flex items-center justify-center font-inter">
+      <div className="min-h-screen bg-gradient-to-br from-yellow-100 via-pink-300 to-purple-400 p-4 sm:p-8 flex items-center justify-center">
         {/* Container หลักที่มีสีสันและเงา */}
         <div className="w-full max-w-lg bg-white p-6 sm:p-10 rounded-3xl  transform transition duration-500 ">
           {/* ส่วนหัวและปุ่มย้อนกลับ */}
