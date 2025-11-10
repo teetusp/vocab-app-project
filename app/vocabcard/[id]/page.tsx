@@ -275,129 +275,80 @@ export default function page() {
   };
 
   return (
-    <div className="min-h-screen bg-pink-100 p-4 flex flex-col items-center">
-      <style>{`
-        /* กำหนดคอนเทนเนอร์สำหรับ Perspective 3D */
-        .perspective-container {
-            perspective: 1000px; /* กำหนดระยะห่างมุมมอง 3D */
-            width: 300px;
-            height: 450px;
-            margin: 2rem 0;
-            user-select: none;
-            cursor: grab; /* เปลี่ยนเคอร์เซอร์เป็นรูปมือเพื่อบ่งชี้ว่าลากได้ */
-        }
-
-        /* ตัวการ์ดที่รับการหมุนทั้งหมด */
-        .card-body {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            transform-style: preserve-3d; /* สำคัญ: ทำให้องค์ประกอบลูกสามารถอยู่ในพื้นที่ 3D ได้ */
-            will-change: transform;
-            transition: transform 0.5s ease; /* สำหรับการรีเซ็ตเริ่มต้นเมื่อเปลี่ยนคำศัพท์ใหม่ */
-        }
-
-        /* รูปแบบพื้นฐานของด้านหน้าและด้านหลังของการ์ด */
-        .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden; /* สำคัญ: ซ่อนด้านหลังเมื่อการ์ดหันออกจากมุมมอง */
-            border-radius: 1.5rem;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            border: 4px solid white;
-        }
-
-        /* รูปแบบเฉพาะสำหรับด้านหน้าของการ์ด */
-        .card-front {
-            transform: rotateY(0deg) translateZ(1px); /* ด้านหน้าหันเข้าหาผู้ใช้เริ่มต้น */
-            background-color: #ffffff;
-        }
-
-        /* รูปแบบเฉพาะสำหรับด้านหลังของการ์ด */
-        .card-back {
-            transform: rotateY(180deg) translateZ(1px); /* ด้านหลังหมุน 180 องศาเพื่อซ่อนไว้เริ่มต้น */
-            /* ใช้สีที่เข้มกว่าเล็กน้อยเพื่อเพิ่มความคมชัดที่ด้านหลัง */
-            background-color: #f7f7f7;
-            color: #333;
-        }
-      `}</style>
-      <h1 className="text-3xl md:text-4xl font-bold text-pink-600 my-8 px-4 text-center">
+    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 p-4 flex flex-col items-center">
+      <h1 className="text-3xl md:text-4xl font-extrabold text-gray-800 my-8 px-4 text-center drop-shadow-md">
         Vocabulary Card
       </h1>
-      <div className="p-4 pt-8 text-center bg-transparent">
-        <h2 className="text-xl font-semibold text-gray-600 flex items-center justify-center">
+
+      <div className="p-4 pt-8 text-center">
+        <h2 className="text-xl font-semibold text-gray-700 flex items-center justify-center">
           <LuRotate3D className="w-5 h-5 mr-2 animate-spin-slow text-gray-600" />
-          360° Interactive Flashcard (สองด้าน)
+          360° Interactive Flashcard
         </h2>
-        <h1 className="text-sm text-gray-400 mt-1">
-          คลิกเมาส์ค้างไว้/สัมผัสแล้วลาก เพื่อหมุนการ์ดดูทุกทิศทาง
-        </h1>
+        <p className="text-sm text-gray-500 mt-1">
+          คลิกหรือสัมผัสแล้วลากเพื่อหมุนการ์ดดูทุกทิศทาง
+        </p>
       </div>
-      {/* คอนเทนเนอร์การ์ดคำศัพท์ (มีการจัดการเหตุการณ์ลากเมาส์) */}
+
+      {/* คอนเทนเนอร์ Perspective */}
       <div
-        className="perspective-container"
+        className="perspective-container mt-8"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
         onTouchMove={handleTouchMove}
-        // อื่น ๆ เช่น style, ref
       >
         <div
           ref={cardRef}
           className="card-body"
-          // ใช้ style เพื่อกำหนดการหมุนตาม state (rotationY, rotationX)
           style={{
             transform: `rotateY(${rotationY}deg) rotateX(${rotationX}deg)`,
-            // ไม่มี transition ขณะลาก
             transition: isDragging ? "none" : "transform 0.5s ease",
           }}
         >
-          {/* ด้านหน้าของการ์ด (แสดงคำศัพท์ภาษาอังกฤษ) */}
-          <div className={`card-face card-front ${vocabs?.english || ""}`}>
+          {/* ด้านหน้า */}
+          <div className="card-face card-front bg-gradient-to-br from-indigo-200 via-pink-200 to-yellow-100 shadow-2xl">
             {vocabs ? (
               <>
-                <img
-                  src={vocabs.vocab_image_url || "/placeholder.png"}
-                  className="w-40 h-40 object-cover mb-6 border-4 border-white"
-                  alt={vocabs.english}
-                />
-                <h1 className="text-5xl font-extrabold text-gray-800 uppercase mb-2">
+                <div className="relative w-40 h-40 mb-6 rounded-2xl overflow-hidden ">
+                  <img
+                    src={vocabs.vocab_image_url || "/placeholder.png"}
+                    alt={vocabs.english}
+                    className="w-full h-full object-cover transition-transform duration-500  rounded-2xl"
+                  />
+                </div>
+                <h1 className="text-5xl font-extrabold text-gray-800 uppercase mb-2 drop-shadow-sm">
                   {vocabs.english}
                 </h1>
-                <h1 className="text-xl font-medium text-gray-600 mb-4">
+                <h2 className="text-xl font-medium text-gray-600 mb-4 italic">
                   {vocabs.spelling}
-                </h1>
-
-                {/* ปุ่มพูดออกเสียง */}
+                </h2>
                 <button
                   onClick={() => handleSpeak(vocabs.english)}
-                  className="px-6 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition mb-4 cursor-pointer"
+                  className="px-6 py-2 bg-indigo-500 text-white rounded-full shadow-lg hover:bg-indigo-600 transition transform hover:scale-105"
                 >
                   🔊 ฟังเสียง
                 </button>
               </>
             ) : (
-              <h1>Loading...</h1>
+              <h1 className="text-gray-500">Loading...</h1>
             )}
           </div>
 
-          {/* ด้านหลังของการ์ด (แสดงคำศัพท์ภาษาไทย) */}
-          <div className="card-face card-back">
-            <h2 className="text-2xl font-bold text-pink-600 mb-4">คำไทย</h2>
-            <h2 className="text-4xl text-gray-800">{vocabs?.thai}</h2>
+          {/* ด้านหลัง */}
+          <div className="card-face card-back bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 shadow-2xl text-center">
+            <h2 className="text-2xl font-bold text-pink-600 mb-4 drop-shadow-sm">
+              คำไทย
+            </h2>
+            <h2 className="text-4xl font-extrabold text-gray-800">
+              {vocabs?.thai}
+            </h2>
           </div>
         </div>
       </div>
 
       <button
         onClick={handleClickBack}
-        className="mt-6 px-8 py-3 bg-red-600 text-white font-bold rounded-full shadow-xl hover:bg-red-700 transition duration-150 transform hover:scale-105 text-lg"
+        className="mt-8 px-8 py-3 bg-red-600 text-white font-bold rounded-full shadow-lg hover:bg-red-700 transition transform hover:scale-105 text-lg flex items-center justify-center"
       >
         <IoMdClose className="text-2xl inline-block mr-2" /> ปิด
       </button>

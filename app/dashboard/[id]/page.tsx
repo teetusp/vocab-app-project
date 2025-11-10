@@ -64,7 +64,7 @@ export default function page() {
       console.error("ไม่พบ user id");
     }
   };
-   const handleClickHistory = () => {
+  const handleClickHistory = () => {
     if (user?.id) {
       router.push(`/history/${user?.id}`);
       console.log("Go to history user:", user?.id);
@@ -83,62 +83,74 @@ export default function page() {
   };
 
   return (
-    <div>
-      <div className="min-h-screen bg-pink-100">
-        <NavBarUser />
-        {/* ส่วนของ Dashboard */}
-        <div className="p-6 md:p-10">
-          {/* 1. ตกแต่งหัวข้อ "Dashboard" ให้มีสีสันไล่ระดับ */}
-          <h1 className="text-4xl font-bold mb-6 bg-gradient-to-r from-blue-500 via-green-500 to-yellow-500 bg-clip-text text-transparent drop-shadow-lg">
-            Dashboard
-          </h1>
-          {/* 2. ตกแต่งการ์ดต้อนรับให้กึ่งโปร่งใส และเปลี่ยนสีข้อความต้อนรับ */}
-          <div className="bg-white/95 backdrop-blur-sm p-6 rounded-2xl shadow-2xl border-2 border-pink-200">
-            <h2 className="text-2xl font-bold text-indigo-600 mb-4">
-              Welcome, {user?.fullname}!
-            </h2>
-            <h3 className="text-gray-600">
-              นี่คือพื้นที่ Dashboard ของคุณ เริ่มเรียนรู้คำศัพท์ใหม่ได้เลย!
-            </h3>
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
+      {/* Navbar */}
+      <NavBarUser />
 
-            {/* Placeholder สำหรับเนื้อหา Dashboard (อัปเดตแล้ว) */}
-            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <Link href={`/dashboardvocab/${user?.id}`} onClick={handleClickVocab}>
-                <div className="h-40 bg-blue-100 rounded-xl flex flex-col items-center justify-center text-blue-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
-                  <Image
-                    src={alpahabet}
-                    alt="alphabet"
-                    className="w-12 h-12 text-blue-600 mb-2"
-                  />
-                  <span className="text-lg">คำศัพท์ทั้งหมด</span>
-                </div>
-              </Link>
+      {/* ขยายเต็มพื้นที่ว่างใน flex container โดยใช้ flex-grow */}
+      <div className="flex-grow p-6 md:p-10 max-w-6xl mx-auto w-full ">
+        {/* หัวข้อ Dashboard */}
+        <h1 className="text-5xl font-extrabold text-center mb-10 text-gray-800 tracking-tight drop-shadow-sm">
+          Dashboard
+        </h1>
 
-              <Link href={`/userhistory/${user?.id}`} onClick={handleClickHistory}>
-                <div className="h-40 bg-green-100 rounded-xl flex flex-col items-center justify-center text-green-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
-                  <Image
-                    src={history}
-                    alt="history"
-                    className="w-12 h-12 text-green-600 mb-2"
-                  />
-                  <span className="text-lg">คำศัพท์ที่เรียนแล้ว</span>
-                </div>
-              </Link>
+        {/* กล่องต้อนรับ */}
+        <div className="bg-white/80 backdrop-blur-md border border-white/40 shadow-2xl rounded-3xl p-8 text-center transition-all duration-500 hover:shadow-pink-200">
+          <h2 className="text-3xl font-semibold text-indigo-600 mb-3">
+            👋 Welcome, {user?.fullname}!
+          </h2>
+          <p className="text-gray-600 mb-8 text-lg">
+            พร้อมเรียนรู้คำศัพท์ใหม่หรือยัง? เลือกหมวดหมู่ที่คุณสนใจได้เลย 💡
+          </p>
 
-              <Link href={`/usertest/${user?.id}`} onClick={handleClickTest}>
-                <div className="h-40 bg-red-100 rounded-xl flex flex-col items-center justify-center text-red-800 font-bold transition transform hover:scale-105 hover:shadow-lg">
-                  <Image
-                    src={test}
-                    alt="test"
-                    className="w-12 h-12 text-red-600 mb-2"
-                  />
-                  <span className="text-lg">แบบทดสอบ</span>
-                </div>
-              </Link>
-            </div>
+          {/* การ์ดเมนู */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <Link
+              href={`/dashboardvocab/${user?.id}`}
+              onClick={handleClickVocab}
+            >
+              <div className="group h-44 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-2xl flex flex-col items-center justify-center text-white font-bold transition-transform transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-indigo-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Image
+                  src={alpahabet}
+                  alt="alphabet"
+                  className="w-14 h-14 mb-3 drop-shadow-md"
+                />
+                <span className="text-lg">คำศัพท์ทั้งหมด</span>
+              </div>
+            </Link>
+
+            <Link
+              href={`/userhistory/${user?.id}`}
+              onClick={handleClickHistory}
+            >
+              <div className="group h-44 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl flex flex-col items-center justify-center text-white font-bold transition-transform transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-green-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Image
+                  src={history}
+                  alt="history"
+                  className="w-14 h-14 mb-3 drop-shadow-md"
+                />
+                <span className="text-lg">คำศัพท์ที่เรียนแล้ว</span>
+              </div>
+            </Link>
+
+            <Link href={`/usertest/${user?.id}`} onClick={handleClickTest}>
+              <div className="group h-44 bg-gradient-to-br from-pink-400 to-red-500 rounded-2xl flex flex-col items-center justify-center text-white font-bold transition-transform transform hover:-translate-y-2 hover:shadow-2xl hover:shadow-pink-300 relative overflow-hidden">
+                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <Image
+                  src={test}
+                  alt="test"
+                  className="w-14 h-14 mb-3 drop-shadow-md"
+                />
+                <span className="text-lg">แบบทดสอบ</span>
+              </div>
+            </Link>
           </div>
         </div>
       </div>
+
+      {/* Footer */}
       <Footer />
     </div>
   );

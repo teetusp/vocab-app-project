@@ -192,7 +192,7 @@ export default function page() {
               className="flex items-center p-2 pr-4 space-x-1 rounded-full bg-blue-100 text-blue-600 hover:bg-blue-200 transition duration-150 transform hover:scale-105 text-sm font-semibold"
             >
               <IoArrowBackCircleSharp className="w-6 h-6" />
-              <span>ย้อนกลับไปหน้าล็อกอิน</span>
+              <span>Back to Login</span>
             </button>
             {/* Spacer ให้ตำแหน่งของหัวข้อดูดีขึ้น */}
             <div className="w-1/2"></div>
@@ -212,7 +212,7 @@ export default function page() {
             {/* Full Name Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                ชื่อ-นามสกุล
+                ชื่อ-นามสกุล (Full name)
               </label>
               <div className="relative">
                 <CiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -229,7 +229,7 @@ export default function page() {
             {/* Email Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                อีเมล
+                อีเมล (Email)
               </label>
               <div className="relative">
                 <CiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -246,7 +246,7 @@ export default function page() {
             {/* Password Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                รหัสผ่าน
+                รหัสผ่าน (Password)
               </label>
               <div className="relative">
                 <CiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -275,7 +275,7 @@ export default function page() {
             {/* Date of Birth Input */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                เดือน/วัน/ปี เกิด
+                เดือน / วัน / ปี เกิด (Date of Birth)
               </label>
               <div className="relative">
                 <SlCalender className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
@@ -294,7 +294,7 @@ export default function page() {
             {/* Gender Selection (Radio Buttons) */}
             <div>
               <label className="block text-gray-700 font-semibold mb-2">
-                เพศ
+                เพศ (Gender)
               </label>
               <div className="flex space-x-6">
                 {genderOptions.map((option) => (

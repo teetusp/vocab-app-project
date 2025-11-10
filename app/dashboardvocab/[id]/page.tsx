@@ -1,7 +1,7 @@
 "use client";
 import react from "react";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import NavBarUser from "../../../components/NavBarUser";
@@ -35,6 +35,35 @@ export default function page() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
 
   const [user, setUser] = useState<User | null>(null);
+  const [searchvocab, setSearchVocab] = useState("");
+
+  // สร้าง VOCAB และ CATEGORIES สำหรับใช้งาน
+  const VOCAB = vocabs.map((vocab) => ({
+    vocab_id: vocab.vocab_id,
+    english: vocab.english,
+    spelling: vocab.spelling,
+    thai: vocab.thai,
+    vocab_image_url: vocab.vocab_image_url,
+    cat_id: vocab.cat_id,
+  }));
+
+  const CATEGORIES = categories.map((cat) => ({
+    cat_id: cat.cat_id,
+    category_name: cat.category_name,
+    cat_image_url: cat.cat_image_url,
+  }));
+
+  // กรองคำศัพท์ตาม category และ searchTerm
+  const filteredVocab = useMemo(() => {
+    return VOCAB.filter((v) => {
+      const matchesCategory = !activeCategory || v.cat_id === activeCategory;
+      const matchesSearch =
+        searchvocab === "" ||
+        v.english.toLowerCase().includes(searchvocab.toLowerCase()) ||
+        v.thai.toLowerCase().includes(searchvocab.toLowerCase());
+      return matchesCategory && matchesSearch;
+    });
+  }, [VOCAB, activeCategory, searchvocab]);
 
   //เมื่อเพจถูกโหลด ให้ดึงข้อมูล vocab_tb จาก supabase เพื่อมาแสดงผลที่หน้าเพจ
   useEffect(() => {
@@ -114,144 +143,155 @@ export default function page() {
     fetchUser();
   }, []);
 
-  const CATEGORIES = categories.map((cat) => ({
-    cat_id: cat.cat_id,
-    category_name: cat.category_name,
-    cat_image_url: cat.cat_image_url,
-  }));
-
-  const VOCAB = vocabs.map((vocab) => ({
-    vocab_id: vocab.vocab_id,
-    english: vocab.english,
-    spelling: vocab.spelling,
-    thai: vocab.thai,
-    vocab_image_url: vocab.vocab_image_url,
-    cat_id: vocab.cat_id,
-  }));
-
   const handleClickBack = () => {
-    router.back();
+    router.push(`/dashboard/${user?.user_id}`);
   };
 
   return (
-    <div>
-      <div className="min-h-screen bg-pink-100">
-        <div className="relative z-40">
-          <NavBarUser />
-        </div>
-        {/* เนื้อหาของหน้าเพจ  */}
-        <div className="p-6 md:p-10">
-          <div className="max-w-7xl mx-auto">
-            {/* ส่วนหัวเรื่อง */}
-            <div className="flex justify-between items-center mb-6">
-              <div>
-                <h1 className="text-4xl font-bold mb-2 text-indigo-600 drop-shadow-md">
-                  คลังคำศัพท์
-                </h1>
-                <h2 className="text-gray-600">
-                  สำรวจคำศัพท์ตามหมวดหมู่ที่คุณสนใจ
-                </h2>
-              </div>
+    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
+      {/* NavBar */}
+      <div className="relative z-40">
+        <NavBarUser />
+      </div>
 
-              <button
-                onClick={handleClickBack}
-                className="px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-xl hover:bg-gray-800 transition duration-150 transform hover:scale-105 text-lg"
-              >
-                <IoIosArrowBack className="text-xl inline-block mr-2" />{" "}
-                ย้อนกลับ
-              </button>
+      {/* ขยายเต็มพื้นที่ว่างใน flex container โดยใช้ flex-grow */}
+      <div className="flex-grow p-6 md:p-10 max-w-6xl mx-auto w-full">
+        {/* เนื้อหาหลัก */}
+        <div className="p-6 md:p-10 max-w-7xl mx-auto">
+          {/* ส่วนหัวเรื่อง */}
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+            <div>
+              <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-sm">
+                คลังคำศัพท์
+              </h1>
+              <h2 className="text-gray-600 text-lg">
+                สำรวจคำศัพท์ตามหมวดหมู่ที่คุณสนใจ
+              </h2>
             </div>
-            {/* กล่องหลักของคลังคำศัพท์ */}
-            <div className="bg-white p-6 rounded-3xl shadow-2xl border-4 border-indigo-200/50">
-              {/* ปุ่มเลือกหมวดหมู่ (Category Filter) */}
-              <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
-                {/* ปุ่ม "ทั้งหมด" */}
+
+            <button
+              onClick={handleClickBack}
+              className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+            >
+              <IoIosArrowBack className="text-xl mr-2" /> Back to Dashboard
+            </button>
+          </div>
+
+          {/* กล่องหลัก */}
+          <div className="bg-white p-6 rounded-3xl shadow-2xl border border-indigo-200/30">
+            {/* ปุ่มเลือกหมวดหมู่ */}
+            <div className="flex flex-wrap gap-4 mb-8 justify-center lg:justify-start">
+              {/* ปุ่ม "ทั้งหมด" */}
+              <button
+                onClick={() => setActiveCategory(null)}
+                className={`flex items-center space-x-2 px-5 py-3 rounded-full font-semibold text-sm transition duration-200 shadow-md ${
+                  activeCategory === null
+                    ? "bg-indigo-500 text-white shadow-indigo-300"
+                    : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
+                }`}
+              >
+                <Image src={selectall} alt="ทั้งหมด" className="w-6 h-6" />
+                <span>ทั้งหมด</span>
+              </button>
+
+              {/* ปุ่มหมวดหมู่ */}
+              {CATEGORIES.map((category) => (
                 <button
-                  onClick={() => setActiveCategory(null)} // หรือ 0 ก็ได้ถ้าใช้ตัวเลข
-                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-bold text-sm transition duration-200 shadow-lg ${
-                    activeCategory === null
-                      ? `bg-indigo-500 text-white shadow-indigo-300`
+                  key={category.cat_id}
+                  onClick={() => setActiveCategory(category.cat_id)}
+                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-semibold text-sm transition duration-200 shadow-md ${
+                    activeCategory === category.cat_id
+                      ? "bg-indigo-500 text-white shadow-indigo-300"
                       : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
                   }`}
                 >
-                  <Image src={selectall} alt= "ทั้งหมด" className="w-6 h-6" />{" "}
-                  {/* ใส่ icon "ทั้งหมด" ได้ */}
-                  <span>ทั้งหมด</span>
+                  <img src={category.cat_image_url} className="w-5 h-5" />
+                  <span>{category.category_name}</span>
                 </button>
+              ))}
+            </div>
 
-                {/* ปุ่มหมวดหมู่อื่น ๆ */}
-                {CATEGORIES.map((category) => (
-                  <button
-                    key={category.cat_id}
-                    onClick={() => setActiveCategory(category.cat_id)}
-                    className={`flex items-center space-x-2 px-5 py-3 rounded-full font-bold text-sm transition duration-200 shadow-lg ${
-                      activeCategory === category.cat_id
-                        ? `bg-indigo-500 text-white shadow-indigo-300`
-                        : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
-                    }`}
-                  >
-                    <img src={category.cat_image_url} className="w-5 h-5" />
-                    <span>{category.category_name}</span>
-                  </button>
-                ))}
-              </div>
-
-              {/* ส่วนหัวของรายการคำศัพท์ */}
-              <div className="flex justify-between items-center mb-6 border-b pb-4">
-                <h2 className="text-2xl font-bold text-gray-800">
-                  หมวดหมู่:{" "}
+            {/* ส่วนหัวรายการคำศัพท์ */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 border-b pb-4 gap-4">
+              {/* ชื่อหมวดหมู่ */}
+              <h2 className="text-2xl font-bold text-gray-800">
+                หมวดหมู่:{" "}
+                <span className="text-indigo-600">
                   {CATEGORIES.find((c) => c.cat_id === activeCategory)
-                    ?.category_name || "ทั้งหมด"}{" "}
-                  ({" "}
+                    ?.category_name || "ทั้งหมด"}
+                </span>{" "}
+                (
+                <span className="font-medium">
                   {Array.isArray(VOCAB)
                     ? VOCAB.filter(
                         (v) => !activeCategory || v.cat_id === activeCategory
                       ).length
-                    : 0}{" "}
-                  คำ )
-                </h2>
-              </div>
+                    : 0}
+                </span>{" "}
+                คำ)
+              </h2>
 
-              {/* แสดงรายการคำศัพท์ทั้งหมดในหมวดหมู่ที่เลือก */}
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-5">
-                {Array.isArray(VOCAB) &&
-                  VOCAB.filter(
-                    (vocab) =>
-                      !activeCategory || vocab.cat_id === activeCategory
-                  ).map((vocab) => (
-                    <div
-                      onClick={() => {
-                        router.push(
-                          `/vocabcard/${vocab.vocab_id}/?user_id=${user?.user_id}`
-                        );
-                      }}
-                      key={vocab.vocab_id}
-                      className="bg-gradient-to-br from-indigo-50 to-pink-50 border border-indigo-200/50 
-                   rounded-2xl shadow-lg cursor-pointer transform transition-all duration-300 
-                   hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:border-indigo-400/70"
-                    >
-                      {/* รูปคำศัพท์ */}
-                      <div className="relative w-full h-24 sm:h-28 md:h-32 overflow-hidden rounded-t-2xl bg-white/80">
-                        <img
-                          src={vocab.vocab_image_url}
-                          alt={vocab.english}
-                          className="w-full h-full object-contain p-2 transition-transform duration-300 hover:scale-110"
-                        />
-                      </div>
-
-                      {/* ข้อมูลคำศัพท์ */}
-                      <div className="p-3 text-center bg-white/60 backdrop-blur-sm rounded-b-2xl">
-                        <h3 className="text-base font-bold text-gray-800 truncate">
-                          {vocab.english}
-                        </h3>
-                        <h3 className="text-sm text-gray-500 italic truncate">
-                          {vocab.spelling}
-                        </h3>
-                        <h3 className="text-sm text-gray-600">{vocab.thai}</h3>
-                      </div>
-                    </div>
-                  ))}
+              {/* ช่องค้นหาคำศัพท์ */}
+              <div className="w-full md:w-64">
+                <input
+                  type="text"
+                  value={searchvocab}
+                  onChange={(e) => setSearchVocab(e.target.value)}
+                  placeholder="ค้นหาคำศัพท์..."
+                  className="w-full px-4 py-2 border border-gray-300 rounded-2xl shadow-sm focus:ring-indigo-400 focus:border-indigo-400 text-gray-800 transition duration-200"
+                />
               </div>
+            </div>
+            {/* ตารางคำศัพท์ */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6 gap-6">
+              {VOCAB.filter((vocab) => {
+                // กรองตามหมวดหมู่
+                const matchesCategory =
+                  !activeCategory || vocab.cat_id === activeCategory;
+
+                // กรองตามช่องค้นหา
+                const matchesSearch =
+                  searchvocab === "" ||
+                  vocab.english
+                    .toLowerCase()
+                    .includes(searchvocab.toLowerCase()) ||
+                  vocab.thai.toLowerCase().includes(searchvocab.toLowerCase());
+
+                return matchesCategory && matchesSearch;
+              }).map((vocab) => (
+                <div
+                  key={vocab.vocab_id}
+                  onClick={() =>
+                    router.push(
+                      `/vocabcard/${vocab.vocab_id}/?user_id=${user?.user_id}`
+                    )
+                  }
+                  className="group relative bg-white/50 backdrop-blur-md border border-white/20 rounded-3xl shadow-lg cursor-pointer overflow-hidden transform transition-all duration-300 hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:border-indigo-300"
+                >
+                  {/* รูปคำศัพท์ */}
+                  <div className="relative w-full h-28 sm:h-32 md:h-36 flex items-center justify-center overflow-hidden rounded-t-3xl bg-gradient-to-tr from-indigo-100 to-pink-100">
+                    <img
+                      src={vocab.vocab_image_url}
+                      alt={vocab.english}
+                      className="w-3/4 h-3/4 object-contain p-2 transition-transform duration-500 group-hover:scale-110"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent opacity-0 group-hover:opacity-20 transition-opacity rounded-t-3xl"></div>
+                  </div>
+
+                  {/* ข้อมูลคำศัพท์ */}
+                  <div className="p-3 text-center bg-white/70 backdrop-blur-sm rounded-b-3xl transition-colors duration-300 group-hover:bg-white/90">
+                    <h3 className="text-base font-bold text-gray-800 truncate">
+                      {vocab.english}
+                    </h3>
+                    <h3 className="text-sm text-gray-500 italic truncate">
+                      {vocab.spelling}
+                    </h3>
+                    <h3 className="text-sm text-gray-600">{vocab.thai}</h3>
+                  </div>
+
+                  <div className="absolute bottom-0 left-0 w-full h-1 bg-indigo-400 scale-x-0 group-hover:scale-x-100 transition-transform origin-left rounded-full"></div>
+                </div>
+              ))}
             </div>
           </div>
         </div>

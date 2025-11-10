@@ -6,6 +6,7 @@ import NavBarUser from "@/components/NavBarUser";
 import Footer from "@/components/Footer";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
+import { IoMdRefresh } from "react-icons/io";
 
 type Vocabulary = {
   vocab_id: number;
@@ -23,6 +24,12 @@ type Question = {
   isCorrect: boolean | null;
 };
 
+type User = {
+  user_id: number;
+  fullname: string;
+  user_image_url: string;
+};
+
 export default function () {
   const router = useRouter();
   const id = useParams().id;
@@ -34,7 +41,9 @@ export default function () {
   const [quizCompleted, setQuizCompleted] = useState(false);
   const [options, setOptions] = useState<string[]>([]);
 
-  const QUIZ_LENGTH = 5; //
+  const [user, setUser] = useState<User | null>(null);
+
+  const QUIZ_LENGTH = 10; //
 
   const shuffleArray = <T,>(array: T[]): T[] => {
     for (let i = array.length - 1; i > 0; i--) {
@@ -81,7 +90,7 @@ export default function () {
       generateQuestion(vocab, quizVocabs)
     );
 
-    setQuestions(newQuestions); // ✅ type ตรงกัน
+    setQuestions(newQuestions); // type ตรงกัน
     setCurrentQuestionIndex(0);
     setScore(0);
     setQuizCompleted(false);
@@ -105,8 +114,42 @@ export default function () {
     fetchVocabs();
   }, []);
 
+  // ดึงข้อมูลผู้ใช้เแบบ 1-1 จากหน้า login + supabase
+  useEffect(() => {
+    async function fetchUser() {
+      try {
+        const userId = localStorage.getItem("user_id");
+        if (!userId) {
+          console.error("ไม่พบ userId ใน localStorage");
+          return;
+        }
+
+        // ดึงข้อมูลผู้ใช้จากตาราง user_tb
+        const { data, error } = await supabase
+          .from("user_tb")
+          .select("user_id, fullname, user_image_url")
+          .eq("user_id", userId)
+          .single();
+
+        if (error) {
+          console.error("เกิดข้อผิดพลาดในการดึงข้อมูลผู้ใช้:", error.message);
+          return;
+        }
+
+        setUser({
+          user_id: data.user_id,
+          fullname: data.fullname,
+          user_image_url: data.user_image_url,
+        });
+      } catch (ex) {
+        console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ Supabase:", ex);
+      }
+    }
+    fetchUser();
+  }, []);
+
   const handleClickBack = () => {
-    router.back();
+    router.push(`/dashboard/${user?.user_id}`);
   };
 
   // สร้างแบบทดสอบเมื่อคอมโพเนนต์ถูกโหลด
@@ -158,107 +201,121 @@ export default function () {
   if (quizCompleted) {
     // หน้าแสดงผลสรุปคะแนนเมื่อทำแบบทดสอบเสร็จสิ้น
     return (
-      <div className="min-h-screen bg-pink-100 ">
+      <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-2000 flex flex-col">
+        {/* Navbar */}
         <div className="relative z-40">
           <NavBarUser />
         </div>
-        {/* ส่วนแสดงผลสรุปคะแนน */}
-        <div className="w-screen h-screen flex items-center justify-center bg-pink-100">
-          <div className="w-full max-w-lg bg-white p-8 rounded-3xl shadow-2xl border-4 border-green-400 text-center">
-            <h2 className="text-4xl font-extrabold text-green-600 mb-4">
+
+        {/* คะแนน */}
+        <div className="flex-1 flex items-center justify-center p-6">
+          <div className="w-full max-w-lg bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-green-400/40 text-center">
+            <h2 className="text-4xl  font-extrabold text-green-600 mb-4 animate-bounce">
               🎉 สิ้นสุดแบบทดสอบ 🎉
             </h2>
-            <h1 className="text-xl text-gray-700 mb-6">คุณทำคะแนนได้:</h1>
-            {/* คะแนนที่ได้ / จำนวนคำถาม */}
-            <h1 className="text-6xl font-black text-pink-500 mb-8">
+            <h1 className="text-lg md:text-xl text-gray-600 mb-6">
+              คุณทำคะแนนได้:
+            </h1>
+            {/* คะแนน */}
+            <h1 className="text-6xl md:text-7xl font-black text-pink-500 mb-8 animate-pulse">
               {score} / {QUIZ_LENGTH}
             </h1>
-            <button
-              onClick={generateQuiz}
-              className="w-full mb-3 px-8 py-3 bg-pink-500 text-white font-bold rounded-full shadow-xl hover:bg-pink-600 transition duration-150 transform hover:scale-105 text-lg"
-            >
-              ทำแบบทดสอบอีกครั้ง
-            </button>
-            <button
-              onClick={handleClickBack}
-              className="w-full px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-xl hover:bg-gray-700 transition duration-150 transform hover:scale-105 text-lg"
-            >
-              <IoIosArrowBack className="text-xl inline-block mr-2" />{" "}
-              กลับไปหน้า Quiz
-            </button>
+
+            {/* ปุ่ม */}
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={generateQuiz}
+                className="w-full px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg"
+              >
+                <IoMdRefresh className="text-xl" /> Try Again
+              </button>
+              <button
+                onClick={handleClickBack}
+                className="w-full px-8 py-3 bg-gradient-to-r from-gray-600 to-gray-800 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg"
+              >
+                <IoIosArrowBack className="text-xl" /> Back to Dashboard
+              </button>
+            </div>
           </div>
         </div>
+
         <Footer />
       </div>
     );
   }
 
   return (
-    <div>
-      <div className="min-h-screen bg-pink-100">
-        <div className="relative z-40">
-          <NavBarUser />
-        </div>
-        <div className="p-6 md:p-10">
-          <div className="max-w-7xl mx-auto">
-            {/* ส่วนหัวเรื่อง */}
-            <div className="flex justify-between items-center mb-6">
+    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200">
+      {/* Navbar */}
+      <div className="relative z-40">
+        <NavBarUser />
+      </div>
+      {/* ขยายเต็มพื้นที่ว่างใน flex container โดยใช้ flex-grow */}
+      <div className="flex-grow p-6 md:p-10 max-w-6xl mx-auto w-full">
+        {/* Content */}
+        <div className="p-6 md:p-12">
+          <div className="max-w-5xl mx-auto">
+            {/* Header */}
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
               <div>
-                <h1 className="text-4xl font-bold mb-2 text-indigo-600 drop-shadow-md">
+                <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-lg">
                   แบบทดสอบ
                 </h1>
-                <h2 className="text-gray-600">
+                <h2 className="text-gray-500 text-lg md:text-xl">
                   แบบทดสอบความรู้เกี่ยวกับคําศัพท์
                 </h2>
               </div>
 
               <button
                 onClick={handleClickBack}
-                className="px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-xl hover:bg-gray-800 transition duration-150 transform hover:scale-105 text-lg"
+                className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
               >
-                <IoIosArrowBack className="text-xl inline-block mr-2" />{" "}
-                ย้อนกลับ
+                <IoIosArrowBack className="text-xl mr-2" /> Back to Dashboard
               </button>
             </div>
-            {/* กล่องหลักของแบบทดสอบ */}
-            <div className="bg-white p-6 rounded-3xl shadow-2xl border-4 border-indigo-200/50">
-              <div className="flex justify-between items-center mb-6 border-b pb-3">
-                {/* หัวข้อของแบบทดสอบ */}
-                <h3 className="text-sm font-semibold text-pink-500">
+
+            {/* Quiz Card */}
+            <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-indigo-200/30">
+              {/* Question Header */}
+              <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
+                <h3 className="text-sm font-medium text-pink-500">
                   คำถามที่ {currentQuestionIndex + 1} จาก {QUIZ_LENGTH}
                 </h3>
-                <h3 className="text-sm font-semibold text-gray-700">
+                <h3 className="text-sm font-medium text-gray-700">
                   คะแนน: {score}
                 </h3>
               </div>
 
-              <h3 className="text-2xl font-bold text-gray-800 mb-4 text-center">
+              {/* Question */}
+              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                 คำศัพท์ภาษาไทยคือ:
               </h3>
-              <div className="bg-pink-100 p-4 rounded-xl mb-8">
-                <h3 className="text-4xl font-extrabold text-pink-700 text-center">
+              <div className="bg-pink-50 p-6 rounded-2xl shadow-inner mb-8">
+                <h3 className="text-5xl md:text-6xl font-extrabold text-pink-600 text-center animate-pulse">
                   {currentQuestion?.thai}
                 </h3>
               </div>
 
-              <div className="flex flex-col space-y-3">
+              {/* Options */}
+              <div className="flex flex-col space-y-4">
                 {currentQuestion?.options.map((option, index) => {
-                  // กำหนดสีปุ่มตามสถานะ
-                  let buttonClass = "p-3 rounded-lg shadow transition border-2";
+                  let buttonClass =
+                    "p-4 rounded-xl shadow-md text-lg font-medium transition-all border-2";
 
                   if (currentQuestion.answered) {
                     if (option === currentQuestion.correctAnswer) {
                       buttonClass +=
-                        " bg-green-500 text-white border-green-700"; // คำที่ตอบถูก สีเขียว
+                        " bg-green-500 text-white border-green-600 shadow-lg scale-105";
                     } else if (option === currentQuestion.userAnswer) {
-                      buttonClass += " bg-red-500 text-white border-red-700"; // เลิอกคำตอบผิด จะขึ้นปุ่มสีแดง
+                      buttonClass +=
+                        " bg-red-500 text-white border-red-600 shadow-md line-through";
                     } else {
                       buttonClass +=
-                        " bg-gray-200 text-gray-900 border-gray-400"; // ตอบที่ไม่ได้เลือก
+                        " bg-gray-100 text-gray-800 border-gray-300";
                     }
                   } else {
                     buttonClass +=
-                      " bg-white text-gray-800 hover:bg-indigo-100 border-gray-300"; 
+                      " bg-white text-gray-800 hover:bg-indigo-100 hover:scale-105";
                   }
 
                   return (
@@ -266,21 +323,13 @@ export default function () {
                       key={index}
                       onClick={() => handleClickAnswer(option)}
                       className={buttonClass}
-                      disabled={currentQuestion.answered} // ป้องกันกดซ้ำ
+                      disabled={currentQuestion.answered}
                     >
                       {option}
                     </button>
                   );
                 })}
               </div>
-
-              <button
-                onClick={handleClickBack}
-                className="mt-8 w-full px-8 py-3 bg-gray-600 text-white font-bold rounded-full shadow-xl hover:bg-gray-700 transition duration-150 transform hover:scale-105 text-lg"
-              >
-                <IoIosArrowBack className="text-xl inline-block mr-2" />{" "}
-                กลับไปหน้าหลัก
-              </button>
             </div>
           </div>
         </div>

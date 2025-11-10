@@ -105,7 +105,7 @@ export default function page() {
               aria-label="ย้อนกลับไปหน้าหลัก"
             >
               <IoArrowBackCircleSharp className="w-6 h-6" />
-              <span>ย้อนกลับไปหน้าหลัก</span>
+              <span>Back to Home</span>
             </Link>
             <div className="w-10"></div>
           </div>

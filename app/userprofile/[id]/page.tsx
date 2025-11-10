@@ -8,6 +8,9 @@ import Image from "next/image";
 import { CiUser } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
 import SweetAlert from "sweetalert2";
+import { CiEdit } from "react-icons/ci";
+import { IoIosArrowBack } from "react-icons/io";
+import { CiTrash } from "react-icons/ci";
 type User = {
   user_id: string;
   fullname: string;
@@ -109,15 +112,16 @@ export default function page() {
     }
   }
   return (
-    <div className="flex flex-col min-h-screen bg-pink-100">
+    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
       {/* Navbar */}
       <NavBarUser />
 
       {/* เนื้อหาหลัก */}
       <div className="flex-grow max-w-2xl mx-auto pt-24 p-4 sm:p-8">
-        <div className="bg-white p-10 rounded-3xl shadow-2xl border-b-4 border-teal-500 text-center">
-          <h2 className="text-3xl font-extrabold text-indigo-800 mb-6 border-b pb-4">
-            ข้อมูลส่วนตัว
+        <div className="bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-2xl border-l-4 border-teal-500 text-center transition transform hover:scale-[1.01]">
+          {/* Header */}
+          <h2 className="text-3xl font-extrabold text-indigo-800 mb-6 border-b pb-4 drop-shadow-sm">
+            Personal Profile
           </h2>
 
           {/* รูปโปรไฟล์ */}
@@ -127,47 +131,55 @@ export default function page() {
               alt="file Input"
               width={240}
               height={240}
-              className="w-40 h-40 object-cover rounded-full border-4 border-teal-400 shadow-xl ring-4 ring-teal-100"
+              className="w-40 h-40 object-cover  border-4 border-teal-400 shadow-xl ring-4 ring-teal-100 transition-transform duration-300 hover:scale-105"
             />
           </div>
 
           {/* รายละเอียด */}
           <div className="space-y-5 text-left text-lg mb-8">
-            <div className="flex items-center space-x-2">
-              <CiUser className="text-xl text-teal-600" />
+            <div className="flex items-center space-x-3">
+              <CiUser className="text-2xl text-teal-600" />
               <span className="font-medium text-gray-700">ชื่อผู้ใช้:</span>
-              <span className="text-gray-900">{fullname}</span>
+              <span className="text-gray-900 font-semibold">{fullname}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <CiMail className="text-xl text-teal-600" />
+            <div className="flex items-center space-x-3">
+              <CiMail className="text-2xl text-teal-600" />
               <span className="font-medium text-gray-700">อีเมล:</span>
-              <span className="text-gray-900">{email}</span>
+              <span className="text-gray-900 font-semibold">{email}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <CiUser className="text-xl text-teal-600" />
+            <div className="flex items-center space-x-3">
+              <CiUser className="text-2xl text-teal-600" />
               <span className="font-medium text-gray-700">เพศ:</span>
-              <span className="text-gray-900">{gender}</span>
+              <span className="text-gray-900 font-semibold">{gender}</span>
             </div>
-            <div className="flex items-center space-x-2">
-              <CiUser className="text-xl text-teal-600" />
+            <div className="flex items-center space-x-3">
+              <CiUser className="text-2xl text-teal-600" />
               <span className="font-medium text-gray-700">วันเกิดผู้ใช้:</span>
-              <span className="text-gray-900">{birthdate}</span>
+              <span className="text-gray-900 font-semibold">{birthdate}</span>
             </div>
           </div>
 
           {/* ปุ่มคำสั่ง */}
-          <div className="flex justify-center space-x-4">
+          <div className="flex flex-wrap justify-center gap-4">
+            {/* ปุ่มย้อนกลับ */}
+            <button
+              className="px-6 py-3 bg-gray-400 text-white rounded-2xl font-semibold hover:bg-gray-500 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+              onClick={() => router.back()}
+            >
+              <IoIosArrowBack className="text-lg" /> Back
+            </button>
+            {/* ปุ่มลบ */}
+
             {/* ปุ่มแก้ไข */}
             <button
-              className="px-6 py-2 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition"
+              className="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
               onClick={() => router.push(`/edituser/${user_id}`)}
             >
-              แก้ไขข้อมูลส่วนตัว
+              <CiEdit className="text-lg" /> Edit Profile
             </button>
 
-            {/* ปุ่มลบ */}
             <button
-              className="px-6 py-2 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition"
+              className="px-6 py-3 bg-red-600 text-white rounded-2xl font-semibold hover:bg-red-700 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
               onClick={() =>
                 handleDeleteUserClick(
                   user?.user_id || "",
@@ -175,15 +187,7 @@ export default function page() {
                 )
               }
             >
-              ลบบัญชี
-            </button>
-
-            {/* ปุ่มย้อนกลับ */}
-            <button
-              className="px-6 py-2 bg-gray-400 text-white rounded-full font-semibold hover:bg-gray-500 transition"
-              onClick={() => router.back()}
-            >
-              ย้อนกลับ
+              <CiTrash className="text-lg" /> Delete Account
             </button>
           </div>
         </div>

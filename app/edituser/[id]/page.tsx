@@ -7,6 +7,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import Footer from "../../../components/Footer";
 import { supabase } from "@/lib/supabaseClient";
 import SweetAlert from "sweetalert2";
+import { IoIosArrowBack } from "react-icons/io";
 type User = {
   id: string;
   fullname: string;
@@ -17,6 +18,7 @@ export default function page() {
   const router = useRouter();
   const id = useParams().id;
 
+  const [isEditing, setIsEditing] = useState(false);
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -77,13 +79,11 @@ export default function page() {
         }
 
         if (data) {
-          setUser(
-            {
-              id: data.user_id,
-              fullname: data.fullname,
-              user_image_url: data.user_image_url,
-            }
-          );
+          setUser({
+            id: data.user_id,
+            fullname: data.fullname,
+            user_image_url: data.user_image_url,
+          });
         }
       } catch (ex) {
         console.error("เกิดข้อผิดพลาดในการเชื่อมต่อ Supabase:", ex);
@@ -202,73 +202,106 @@ export default function page() {
     }
   }
 
-  
   return (
-    <div className="min-h-screen bg-pink-100">
-      {/* ส่วน NavBar */}
+    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200 flex flex-col">
       <NavBarUser />
-      {/* ส่วนแก้ไขข้อมูลส่วนตัว */}
-      <div className="p-6 md:p-10">
-        <div className="max-w-4xl mx-auto">
+
+      <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-12">
+        <div className="w-full max-w-3xl">
           {/* Header */}
-          <h1 className="text-4xl font-bold mb-8 text-center bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-md">
-            แก้ไขข้อมูลส่วนตัว
-          </h1>
-          <div className="bg-white p-6 md:p-10 rounded-3xl shadow-2xl border-4 border-indigo-300/50">
+          <div className="flex items-center justify-between mb-8">
+            {/* Back Button */}
+            <button
+              onClick={() => router.back()} // หรือ handleClickBack()
+              className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+            >
+              <IoIosArrowBack className="mr-2 text-lg" />
+              Back
+            </button>
+
+            {/* Title */}
+            <h1 className="text-4xl font-extrabold text-indigo-600 drop-shadow-sm text-center flex-1 mx-4">
+              แก้ไขประวัติส่วนตัว
+            </h1>
+
+            {/* Edit Profile Button */}
+            {!isEditing && (
+              <button
+                onClick={() => setIsEditing(true)}
+                className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+              >
+                Edit Profile
+              </button>
+            )}
+          </div>
+
+          {/* Form Card */}
+          <div className="bg-white/90 backdrop-blur-md p-8 md:p-12 rounded-3xl shadow-2xl border border-indigo-300/30 space-y-6">
             <form onSubmit={handleUploadAndUpdate} className="space-y-6">
-              {/* Full Name  */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">
-                    ชื่อ-นามสกุล (Full Name)
-                  </span>
-                  <input
-                    type="text"
-                    value={fullname}
-                    onChange={(e) => setFullname(e.target.value)}
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                    placeholder="Enter your full name"
-                  />
+              {/* Full Name */}
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  ชื่อ-นามสกุล (Full Name)
                 </label>
+                <input
+                  type="text"
+                  value={fullname}
+                  onChange={(e) => setFullname(e.target.value)}
+                  placeholder="Enter your full name"
+                  disabled={!isEditing}
+                  className={`w-full px-5 py-3 border rounded-2xl shadow-sm text-lg transition duration-200
+                ${
+                  isEditing
+                    ? "border-gray-300 focus:ring-pink-400 focus:border-pink-400 bg-white"
+                    : "bg-gray-100 cursor-not-allowed"
+                }`}
+                />
               </div>
 
               {/* Email */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">
-                    อีเมล (New Email)
-                  </span>
-                  <input
-                    type="text"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                  />
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  อีเมล (Email)
                 </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  disabled={!isEditing}
+                  className={`w-full px-5 py-3 border rounded-2xl shadow-sm text-lg transition duration-200
+                ${
+                  isEditing
+                    ? "border-gray-300 focus:ring-pink-400 focus:border-pink-400 bg-white"
+                    : "bg-gray-100 cursor-not-allowed"
+                }`}
+                />
               </div>
 
               {/* Password */}
-              <div className="mb-6">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">
-                    รหัสผ่าน (New Password)
-                  </span>
-                  <div className="relative mt-1">
-                    <input
-                      type={showPassword ? "text" : "password"} // สลับประเภท input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      className="block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg pr-12" // เพิ่ม padding ขวา
-                      placeholder="Enter new password (optional)"
-                    />
-                    {/* ปุ่มสลับการแสดงรหัสผ่าน */}
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  รหัสผ่าน (Password)
+                </label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? "text" : "password"}
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    placeholder="Enter new password (optional)"
+                    disabled={!isEditing}
+                    className={`w-full px-5 py-3 border rounded-2xl shadow-sm text-lg pr-12 transition duration-200
+                  ${
+                    isEditing
+                      ? "border-gray-300 focus:ring-pink-400 focus:border-pink-400 bg-white"
+                      : "bg-gray-100 cursor-not-allowed"
+                  }`}
+                  />
+                  {isEditing && (
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
-                      aria-label={
-                        showPassword ? "Hide password" : "Show password"
-                      }
+                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 transition duration-200"
                     >
                       {showPassword ? (
                         <FaEyeSlash className="w-6 h-6" />
@@ -276,69 +309,82 @@ export default function page() {
                         <FaEye className="w-6 h-6" />
                       )}
                     </button>
-                  </div>
-                </label>
+                  )}
+                </div>
               </div>
 
               {/* Birthdate */}
-              <div className="mb-8">
-                <label className="block">
-                  <span className="text-gray-700 font-medium">
-                    วันเกิด (Birthdate)
-                  </span>
-                  <input
-                    type="date"
-                    value={birthdate}
-                    onChange={(e) => setBirthdate(e.target.value)}
-                    className="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-xl shadow-inner focus:ring-pink-500 focus:border-pink-500 text-lg"
-                  />
+              <div>
+                <label className="block text-gray-700 font-semibold mb-2">
+                  วันเกิด (Birthdate)
                 </label>
+                <input
+                  type="date"
+                  value={birthdate}
+                  onChange={(e) => setBirthdate(e.target.value)}
+                  disabled={!isEditing}
+                  className={`w-full px-5 py-3 border rounded-2xl shadow-sm text-lg transition duration-200
+                ${
+                  isEditing
+                    ? "border-gray-300 focus:ring-pink-400 focus:border-pink-400 bg-white"
+                    : "bg-gray-100 cursor-not-allowed"
+                }`}
+                />
               </div>
 
-              {/*  User Image */}
-              <div className="mt-1 flex items-center space-x-4">
+              {/* User Image */}
+              <label className="block text-gray-700 font-semibold mb-2">
+                รูปภาพ (Profile Picture)
+              </label>
+              <div className="flex items-center space-x-4">
                 <input
                   type="file"
                   id="FileInput"
                   className="hidden"
                   onChange={handleSelectImagePreview}
                   accept="image/*"
+                  disabled={!isEditing}
                 />
-                <label
-                  htmlFor="FileInput"
-                  className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-full transition-colors duration-300"
-                >
-                  เลือกรูปภาพ
-                </label>
+                {isEditing && (
+                  <label
+                    htmlFor="FileInput"
+                    className="cursor-pointer bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-6 rounded-full transition duration-300 shadow-md"
+                  >
+                    เลือกรูปภาพ
+                  </label>
+                )}
                 {preview_file && (
                   <img
                     src={preview_file}
                     alt="preview"
-                    className="w-24 h-24 rounded-lg object-cover "
+                    className="w-24 h-24 rounded-2xl object-cover border border-gray-200 shadow-sm"
                   />
                 )}
               </div>
 
-              {/* Submit Button */}
-              <div className="flex justify-between items-center space-x-4">
-                <button
-                  type="button"
-                  onClick={() => router.back()}
-                  className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-gray-400 hover:bg-gray-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
-                >
-                  ยกเลิก
-                </button>
-                <button
-                  type="submit"
-                  className="w-1/2 py-3 px-4 rounded-xl text-lg font-bold text-gray-900 bg-green-400 hover:bg-green-500 transition duration-200 shadow-md transform hover:scale-[1.02]"
-                >
-                  บันทึกการเปลี่ยนแปลง
-                </button>
-              </div>
+              {/* Buttons */}
+              {isEditing && (
+                <div className="flex flex-col md:flex-row justify-center gap-4 mt-6">
+                  <button
+                    type="button"
+                    onClick={() => setIsEditing(false)}
+                    className="flex-1 py-3 px-6 rounded-2xl text-lg font-bold text-gray-900 bg-gray-300 hover:bg-gray-400 shadow-md transition transform hover:scale-105"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    className="flex-1 py-3 px-6 rounded-2xl text-lg font-bold text-white bg-gradient-to-r from-green-400 to-green-500 hover:from-green-500 hover:to-green-600 shadow-lg transition transform hover:scale-105"
+                  >
+                    Save Profile
+                  </button>
+                </div>
+              )}
             </form>
           </div>
         </div>
       </div>
+
       <Footer />
     </div>
   );
