@@ -8,6 +8,10 @@ import { CiUser } from "react-icons/ci";
 import { CiMail } from "react-icons/ci";
 import SweetAlert from "sweetalert2";
 import NavBarStaff from "@/components/NavBarStaff";
+import { CiEdit } from "react-icons/ci";
+import { IoIosArrowBack } from "react-icons/io";
+import { CiTrash } from "react-icons/ci";
+
 
 type Staff = {
   staff_id: string;
@@ -31,7 +35,9 @@ export default function page() {
   const [birthdate, setBirthdate] = useState<string>("");
   const [gender, setGender] = useState<string>("");
   const [phonenumber, setPhoneNumber] = useState<string>("");
-  const [staff_preview_file, setStaffPreviewFile] = useState<string | null>(null);
+  const [staff_preview_file, setStaffPreviewFile] = useState<string | null>(
+    null
+  );
 
   //ดึงข้อมูลจาก supabase มาแสดงหน้าจอตาม id ที่ได้มาจาก url
   useEffect(() => {
@@ -60,7 +66,7 @@ export default function page() {
       );
       setGender(data.gender);
       setPhoneNumber(data.phonenumber);
-      setStaffPreviewFile(data.user_image_url);
+      setStaffPreviewFile(data.staff_image_url);
     }
 
     fetchData();
@@ -109,7 +115,7 @@ export default function page() {
         return;
       }
 
-      router.push(`/dashboard/${id}`);
+      router.push(`/staffdashboard/${id}`);
     }
   }
 
@@ -166,18 +172,24 @@ export default function page() {
           </div>
 
           {/* ปุ่มคำสั่ง */}
-          <div className="flex justify-center space-x-4">
+          <div className="flex flex-wrap justify-center gap-4">
+            {/* ปุ่มย้อนกลับ */}
+            <button
+              className="px-6 py-3 bg-gray-400 text-white rounded-2xl font-semibold hover:bg-gray-500 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
+              onClick={() => router.back()}
+            >
+             <IoIosArrowBack className="text-xl" />ย้อนกลับ
+            </button>
             {/* ปุ่มแก้ไข */}
             <button
-              className="px-6 py-2 bg-indigo-600 text-white rounded-full font-semibold hover:bg-indigo-700 transition"
+              className="px-6 py-3 bg-indigo-600 text-white rounded-2xl font-semibold hover:bg-indigo-700 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
               onClick={() => router.push(`/staffedit/${staff_id}`)}
             >
-              แก้ไขข้อมูลส่วนตัว
+             <CiEdit className="text-xl" />แก้ไขข้อมูลส่วนตัว
             </button>
-
             {/* ปุ่มลบ */}
             <button
-              className="px-6 py-2 bg-red-600 text-white rounded-full font-semibold hover:bg-red-700 transition"
+              className="px-6 py-3 bg-red-600 text-white rounded-2xl font-semibold hover:bg-red-700 shadow-lg transition transform hover:scale-105 flex items-center gap-2"
               onClick={() =>
                 handleDeleteUserClick(
                   staff?.staff_id || "",
@@ -185,15 +197,7 @@ export default function page() {
                 )
               }
             >
-              ลบบัญชี
-            </button>
-
-            {/* ปุ่มย้อนกลับ */}
-            <button
-              className="px-6 py-2 bg-gray-400 text-white rounded-full font-semibold hover:bg-gray-500 transition"
-              onClick={() => router.back()}
-            >
-              ย้อนกลับ
+             <CiTrash className="text-xl" />ลบบัญชี
             </button>
           </div>
         </div>

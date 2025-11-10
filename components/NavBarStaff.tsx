@@ -87,67 +87,97 @@ export default function NavBarStaff() {
   return (
     <div>
       {/* ส่วน NavBar */}
-      <div className="sticky bg-blue-200/90 backdrop-blur-sm shadow-md z-50">
+      <div className="sticky top-0 z-50 bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-500 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
-            {/* โลโก้/ชื่อแอป */}
+            {/* โลโก้ */}
             <div
-              onClick={() => router.push(`/staffdashboard/${staff?.staff_id}`)}
-              className="flex items-center space-x-2 cursor-pointer"
+              onClick={() => window.location.reload()}
+              className="flex items-center space-x-2 cursor-pointer transform transition-transform hover:scale-105"
             >
-              <Image src={rocket} alt="Logo" className="w-10 h-10 mr-2" />
+              <Image
+                src={rocket}
+                alt="Logo"
+                className="w-10 h-10 drop-shadow-md"
+              />
               <h1 className="text-2xl font-black text-indigo-600 tracking-wide">
-                <span className="text-yellow-500">Card</span>{" "}
-                <span className="text-red-500">Vocab</span>
+                <span className="text-yellow-300">Card</span>{" "}
+                <span className="text-red-600">Vocab</span>
               </h1>
             </div>
-            <div className="relative ">
+
+            {/* เมนูหลัก */}
+            <div className="hidden md:flex space-x-8">
+              <Link
+                href={`/staffdashboard/${staff?.staff_id}`}
+                className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
+              >
+                Dashboard
+              </Link>
+              <Link
+                href={`/showalluser/${staff?.staff_id}`}
+                className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
+              >
+                User List
+              </Link>
+              <Link
+                href={`/showallcat/${staff?.staff_id}`}
+                className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
+              >
+                Categories
+              </Link>
+              <Link
+                href={`/showallvocab/${staff?.staff_id}`}
+                className="text-lg font-semibold text-white hover:text-yellow-300 transition-colors duration-200"
+              >
+                Vocabulary
+              </Link>
+            </div>
+
+            {/* โปรไฟล์ */}
+            <div className="relative">
               <button
                 onClick={() => setIsProfileOpen(!isProfileOpen)}
-                className="flex items-center space-x-2 rounded-full p-1 pr-3 bg-gray-100 hover:bg-gray-200 transition cursor-pointer"
+                className="flex items-center space-x-2 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-200 shadow-md pr-3 pl-1 py-1 border border-white/30"
               >
-                {/* รูปภาพโปรไฟล์ (Placeholder) */}
                 <img
-                  className="w-8 h-8 rounded-full object-cover "
+                  className="w-9 h-9 rounded-full object-cover border-2 border-white shadow"
                   src={staff?.staff_image_url}
-                  width={32}
-                  height={32}
                   alt="User profile"
                 />
-                <span className="hidden md:inline font-medium text-gray-700">
+                <span className="hidden md:inline font-semibold text-white drop-shadow">
                   {staff?.fullname}
                 </span>
                 <IoIosArrowDropdown
-                  className={`w-5 h-5 text-gray-500 transition-transform ${
+                  className={`w-5 h-5 text-white transition-transform ${
                     isProfileOpen ? "rotate-180" : ""
                   }`}
                 />
               </button>
 
-              {/* Dropdown Menu */}
+              {/* เมนูโปรไฟล์ */}
               {isProfileOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-xl overflow-hidden border">
+                <div className="absolute right-0 mt-3 w-52 bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden animate-fade-in">
                   <button
                     type="button"
                     onClick={handleClickViewProfile}
-                    className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-100 cursor-pointer"
+                    className="w-full flex items-center px-5 py-3 text-gray-700 hover:bg-indigo-50 transition"
                   >
-                    <CgProfile className="w-5 h-5 mr-3 text-blue-500" />
+                    <CgProfile className="w-5 h-5 mr-3 text-indigo-500" />
                     View Profile
                   </button>
                   <button
                     type="button"
                     onClick={handleClickEditProfile}
-                    className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-indigo-100 cursor-pointer"
+                    className="w-full flex items-center px-5 py-3 text-gray-700 hover:bg-indigo-50 transition"
                   >
-                    <FaEdit className="w-5 h-5 mr-3 text-blue-500" />
+                    <FaEdit className="w-5 h-5 mr-3 text-indigo-500" />
                     Edit Profile
                   </button>
-
                   <button
                     onClick={handleClickSignOut}
                     type="button"
-                    className="w-full flex items-center px-4 py-3 text-gray-700 hover:bg-red-200 cursor-pointer"
+                    className="w-full flex items-center px-5 py-3 text-gray-700 hover:bg-red-50 transition"
                   >
                     <CiLogout className="w-5 h-5 mr-3 text-red-500" />
                     Sign Out

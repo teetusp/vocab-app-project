@@ -56,11 +56,13 @@ export default function page() {
       setPassword(data.password);
       setBirthdate(data.birthdate);
       setPhonenumber(data.phonenumber);
-      setPreviewFile(data.user_image_url);
+      setPreviewFile(data.staff_image_url);
     }
 
     fetchData();
   }, []);
+
+  
 
   //ฟังก์ชันเลือกรูปภาพเพื่อพรีวิวก่อนที่จะอัปโหลด
   function handleSelectImagePreview(e: React.ChangeEvent<HTMLInputElement>) {
@@ -169,7 +171,7 @@ export default function page() {
       setPreviewFile(null);
       image_url = "";
       //redirect กลับไปหน้า แสดงงานทั้งหมด
-      router.push(`/dashboard/${user?.id}`);
+      router.push(`/staffdashboard/${user?.id}`);
     }
   }
 
