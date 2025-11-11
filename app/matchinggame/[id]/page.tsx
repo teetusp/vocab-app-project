@@ -138,68 +138,6 @@ export default function page() {
     fetchUser();
   }, []);
 
-  // การ์ดจะสลับทุก 25 วินาที ในระดับ hard
-
-  useEffect(() => {
-    if (difficulty !== "hard" || cards.length === 0) return;
-    const interval = setInterval(() => {
-      // 1.  ปิดการ์ดที่เปิดอยู่ทั้งหมดก่อนเริ่มการเตือน
-      //    ***สมมติว่าคุณมี setFlipped/setDisabled***
-      // setFlipped([]);
-      // setDisabled(false);
-      setShowWarning(true); // แสดงข้อความเตือนก่อนสลับ
-      setCountdown(3); // เริ่ม countdown 3 วินาที
-
-      let counter = 3;
-      const countdownInterval = setInterval(() => {
-        counter -= 1;
-
-        setCountdown(counter > 0 ? counter : null);
-        if (counter <= 0) {
-          clearInterval(countdownInterval);
-          setShowWarning(false);
-          setIsShuffling(true);
-
-          // สลับเฉพาะการ์ดที่ยังไม่ matched
-
-          setCards((prevCards) => {
-            const matchedCards = prevCards.filter((card) =>
-              matched.includes(card.key)
-            );
-            const unmatchedCards = prevCards.filter(
-              (card) => !matched.includes(card.key)
-            );
-            // สุ่มเฉพาะ unmatched
-            const shuffledUnmatched = [...unmatchedCards].sort(
-              () => Math.random() - 0.5
-            );
-            // รวมกลับตามลำดับเดิม โดย matched จะอยู่ที่เดิม
-            const newCards = prevCards.map((card) => {
-              if (matched.includes(card.key)) return card; // คงที่
-              return shuffledUnmatched.shift()!; // ดึงการ์ดใหม่จาก shuffled
-            });
-
-            // อัปเดต key ใหม่เฉพาะที่จำเป็น (เพื่อ animation ลื่นขึ้น)
-
-            return newCards.map((card, idx) => ({
-              ...card,
-              // key ที่ใช้อัปเดต ควรช่วยให้ React จัดการ re-render ได้ดี
-              // key: `${idx}-${card.vocab_id}`, // รูปแบบเดิม
-              // อาจจะใช้ key เดิมของการ์ดที่ถูกสลับ เพื่อช่วยเรื่อง animation (ขึ้นอยู่กับ implementation ของการ์ด)
-              // แต่รูปแบบเดิมก็ใช้ได้ หากต้องการบังคับให้ React ถือว่าเป็นการ์ดใหม่ในตำแหน่งใหม่
-            }));
-          });
-
-          setTimeout(() => setIsShuffling(false), 500); // Glow effect
-        }
-      }, 1000);
-
-      // 2. ✅ แก้ไขเป็น 25000 มิลลิวินาที (15 วินาที)
-    }, 15000);
-
-    return () => clearInterval(interval); // Cleanup
-  }, [difficulty, cards.length, matched /*, setFlipped, setDisabled*/]);
-
   // ฟังก์ชันดึง highest score จาก Supabase
   // ฟังก์ชันดึงคะแนนสูงสุดจาก Supabase
   const fetchHighestScores = async () => {
@@ -314,8 +252,7 @@ export default function page() {
       setTimeout(() => setFlipped([]), 1000);
     }
   };
-  //-------------------------------------------------------------------------------------
-  //-------------------------------------------------------------------------------------==============
+
   // ตรวจสอบเกมจบ
   useEffect(() => {
     if (cards.length > 0 && matched.length === cards.length) {
@@ -453,10 +390,10 @@ export default function page() {
                     }`}
                   >
                     {diff === "easy"
-                      ? "ง่าย"
+                      ? "Easy"
                       : diff === "medium"
-                      ? "ปานกลาง"
-                      : "ยาก"}
+                      ? "Normal"
+                      : "Hard"}
                   </button>
                 ))}
               </div>
@@ -467,16 +404,16 @@ export default function page() {
                   <thead className="bg-indigo-500 text-white">
                     <tr>
                       <th className="py-4 px-4 md:px-6 text-sm md:text-base font-bold">
-                        อันดับ
+                        Rank
                       </th>
                       <th className="py-4 px-4 md:px-6 text-sm md:text-base font-bold">
-                        ชื่อผู้เล่น
+                        Player Name
                       </th>
                       <th className="py-4 px-4 md:px-6 text-sm md:text-base font-bold">
-                        คะแนนสูงสุด
+                        Highest Score
                       </th>
                       <th className="py-4 px-4 md:px-6 text-sm md:text-base font-bold">
-                        เวลาเร็วที่สุด
+                        Fastest Time
                       </th>
                     </tr>
                   </thead>
@@ -542,19 +479,20 @@ export default function page() {
                 </div>
 
                 <div className="flex flex-wrap items-center justify-center gap-3 px-6 py-3 bg-gradient-to-r from-yellow-50 to-orange-50 rounded-full border-2 border-yellow-200">
-                  <span className="text-2xl">🏆</span>
+                  <span className="font-bold text-gray-700">Your Score</span>{" "}
+                  <span className="text-2xl"> 🏆</span>
                   <div className="flex flex-wrap items-center gap-2 text-sm md:text-base font-semibold">
-                    <span className="text-gray-700">ง่าย:</span>
+                    <span className="text-gray-700">Easy:</span>
                     <span className="text-indigo-600">
                       {highestScores.easy}
                     </span>
                     <span className="text-gray-400">•</span>
-                    <span className="text-gray-700">ปานกลาง:</span>
+                    <span className="text-gray-700">Normal:</span>
                     <span className="text-indigo-600">
                       {highestScores.medium}
                     </span>
                     <span className="text-gray-400">•</span>
-                    <span className="text-gray-700">ยาก:</span>
+                    <span className="text-gray-700">Hard:</span>
                     <span className="text-indigo-600">
                       {highestScores.hard}
                     </span>
@@ -581,10 +519,10 @@ export default function page() {
                       }`}
                     >
                       {level === "easy"
-                        ? "🟢 ง่าย (4 คู่)"
+                        ? "🟢 Easy (4 pairs)"
                         : level === "medium"
-                        ? "🟡 ปานกลาง (6 คู่)"
-                        : "🔴 ยาก (8 คู่)"}
+                        ? "🟡 Normal (6 pairs)"
+                        : "🔴 Hard (8 pairs)"}
                     </button>
                   ))}
                 </div>
@@ -592,27 +530,7 @@ export default function page() {
 
               {/* Game Cards Grid */}
               <div className="relative flex flex-col items-center">
-                {difficulty === "hard" && (
-                  <div className="bg-red-50 border-l-4 border-red-400 text-red-700 p-4 mb-6 rounded">
-                    <p className="font-bold">
-                      ⚠️ ระดับยาก: การ์ดจะสลับที่กันเองทุกๆ 20 วินาที!
-                    </p>
-                  </div>
-                )}
-
-                <AnimatePresence>
-                  {isShuffling && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      transition={{ duration: 0.4 }}
-                      className="bg-orange-100 border-2 border-orange-400 text-orange-700 p-3 mb-4 rounded-lg text-center font-bold animate-pulse"
-                    >
-                      🔄 การ์ดกำลังสลับที่...
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {/* Cards Grid */}
                 <div
                   className={`grid gap-3 md:gap-4 mb-6 w-2/4 max-w-4xl
       ${difficulty === "easy" ? "grid-cols-2 md:grid-cols-4" : ""}
@@ -661,6 +579,9 @@ export default function page() {
                     </motion.div>
                   ))}
                 </div>
+                <p className="mt-8 text-lg text-gray-700">
+                 <span className="text-red-600">*</span>วิธีการเล่น: คลิก/กด ที่การ์ดเพื่อเริ่มเกม
+                </p>
               </div>
             </div>
           </div>

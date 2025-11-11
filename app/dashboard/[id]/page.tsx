@@ -178,7 +178,27 @@ export default function page() {
                 </span>
               </div>
             </Link>
-            <Link href={`/matchinggame/${user?.id}`} onClick={handleClickMatchingGame}>
+            <Link
+              href={`/matchinggame/${user?.id}`}
+              onClick={handleClickMatchingGame}
+            >
+              <div className="group h-52 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
+                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <Image
+                  src={matching || "/placeholder.svg"}
+                  alt="test"
+                  className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
+                />
+                <span className="text-2xl group-hover:scale-110 transition-transform">
+                  เกมจับคู่
+                </span>
+              </div>
+            </Link>
+            <Link
+              href={`/wordbuilder/${user?.id}`}
+              
+            >
               <div className="group h-52 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 

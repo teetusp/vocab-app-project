@@ -19,6 +19,7 @@ type User = {
 export default function Navbar() {
   const router = useRouter();
 
+  const [isMiniGameOpen, setIsMiniGameOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [user, setUser] = useState<User | null>(null);
 
@@ -95,7 +96,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
         <div className="flex justify-between items-center h-20">
           <div
-            onClick={() => window.location.reload()}
+            onClick={() => router.push("/dashboard/" + user?.id)}
             className="flex items-center space-x-3 cursor-pointer transform transition-all hover:scale-110 hover:rotate-3 duration-300"
           >
             <div className="relative">
@@ -137,6 +138,30 @@ export default function Navbar() {
             >
               Quiz
             </Link>
+            <div className="relative">
+              <button
+                onClick={() => setIsMiniGameOpen(!isMiniGameOpen)}
+                className="flex items-center space-x-1 text-lg font-bold text-white hover:text-yellow-300 transition-all duration-200 px-3 py-2 rounded-xl hover:bg-white/20 hover:scale-110 transform"
+              >
+                <span>Mini Game</span>
+                <IoIosArrowDropdown
+                  className={`w-5 h-5 transition-transform duration-300 ${
+                    isMiniGameOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {isMiniGameOpen && (
+                <div className="absolute right-0 mt-3 w-55 bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-2xl border-4 border-purple-300 overflow-hidden animate-in slide-in-from-top-2">
+                  <Link
+                    href={`/matchinggame/${user?.id}`}
+                    className="w-full flex justify-center px-5 py-4 text-gray-800 hover:bg-purple-200 transition-all font-bold hover:pl-7 duration-200"
+                  >
+                  🎮 Matching Game
+                  </Link>
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="relative">
