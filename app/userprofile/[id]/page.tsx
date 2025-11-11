@@ -112,12 +112,19 @@ export default function page() {
     }
   }
   return (
-    <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-indigo-50">
+    <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-200 overflow-hidden">
+      {/*ลาย background*/}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-300 rounded-full opacity-40 animate-bounce"></div>
+        <div className="absolute top-32 right-20 w-32 h-32 bg-pink-400 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-blue-300 rounded-full opacity-50 animate-bounce delay-100"></div>
+        <div className="absolute top-1/2 right-10 w-28 h-28 bg-purple-300 rounded-full opacity-40 animate-pulse delay-200"></div>
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce delay-300"></div>
+      </div>
       {/* Navbar */}
       <NavBarUser />
-
       {/* เนื้อหาหลัก */}
-      <div className="flex-grow max-w-2xl mx-auto pt-24 p-4 sm:p-8">
+      <div className="flex-grow max-w-2xl mx-auto pt-24 p-4 sm:p-8 mt-20">
         <div className="bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-2xl border-l-4 border-teal-500 text-center transition transform hover:scale-[1.01]">
           {/* Header */}
           <h2 className="text-3xl font-extrabold text-indigo-800 mb-6 border-b pb-4 drop-shadow-sm">
@@ -192,7 +199,6 @@ export default function page() {
           </div>
         </div>
       </div>
-
       {/* Footer */}
       <Footer />
     </div>

@@ -204,13 +204,21 @@ export default function page() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 via-purple-50 to-blue-50">
+    <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-200 overflow-hidden">
+      {/*ลาย background*/}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-300 rounded-full opacity-40 animate-bounce"></div>
+        <div className="absolute top-32 right-20 w-32 h-32 bg-pink-400 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-blue-300 rounded-full opacity-50 animate-bounce delay-100"></div>
+        <div className="absolute top-1/2 right-10 w-28 h-28 bg-purple-300 rounded-full opacity-40 animate-pulse delay-200"></div>
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce delay-300"></div>
+      </div>
       <NavBarUser />
 
       <div className="flex-1 flex flex-col items-center justify-center p-6 md:p-12">
         <div className="w-full max-w-3xl">
           {/* Header */}
-          <div className="flex items-center justify-between mb-8">
+          <div className="mt-15 flex items-center justify-between mb-8">
             {/* Back Button */}
             <button
               onClick={() => router.back()} // หรือ handleClickBack()
@@ -231,7 +239,7 @@ export default function page() {
                 onClick={() => setIsEditing(true)}
                 className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
               >
-              <FaRegEdit className="mr-2 text-lg" />  Edit Profile
+                <FaRegEdit className="mr-2 text-lg" /> Edit Profile
               </button>
             )}
           </div>

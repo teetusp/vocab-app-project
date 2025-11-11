@@ -182,7 +182,7 @@ export default function page() {
               href={`/matchinggame/${user?.id}`}
               onClick={handleClickMatchingGame}
             >
-              <div className="group h-52 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
+              <div className="group h-52 bg-gradient-to-br from-purple-400 via-pink-400 to-violet-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-indigo-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                 <Image
@@ -199,7 +199,7 @@ export default function page() {
               href={`/wordbuilder/${user?.id}`}
               
             >
-              <div className="group h-52 bg-gradient-to-br from-blue-400 via-indigo-400 to-purple-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
+              <div className="group h-52 bg-gradient-to-br from-yellow-400 via-gold-600 to-orange-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                 <Image
