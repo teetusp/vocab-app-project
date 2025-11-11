@@ -6,8 +6,23 @@ import follow from "../assets/follow.png";
 import Footer from "../components/Footer";
 import NavBar from "../components/NavBarHome";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
 export default function Page() {
+  const [stars, setStars] = useState<
+    { left: string; top: string; fontSize: string; animationDelay: string }[]
+  >([]);
+
+  useEffect(() => {
+    // สร้างดาวแบบสุ่มหลังจากโหลดบน client แล้ว
+    const s = Array.from({ length: 15 }).map(() => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      fontSize: `${Math.random() * 20 + 15}px`, 
+      animationDelay: `${Math.random() * 2}s`,
+    }));
+    setStars(s);
+  }, []);
   return (
     <div className="relative overflow-hidden">
       {/* Fun floating shapes decoration */}
@@ -42,16 +57,11 @@ export default function Page() {
         <div className="relative bg-gradient-to-br from-yellow-200 via-pink-200 to-purple-200 pt-20 pb-32 md:pt-32 md:pb-40 overflow-hidden">
           {/* Decorative stars */}
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            {[...Array(15)].map((_, i) => (
+            {stars.map((star, i) => (
               <div
                 key={i}
                 className="absolute text-yellow-400 animate-pulse"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  top: `${Math.random() * 100}%`,
-                  fontSize: `${Math.random() * 20 + 15}px`,
-                  animationDelay: `${Math.random() * 2}s`,
-                }}
+                style={star}
               >
                 ★
               </div>
@@ -221,17 +231,17 @@ export default function Page() {
                       />
                     </div>
                   </div>
-                  <div className="bg-green-100 rounded-2xl p-2 mb-4">
-                    <h2 className="text-3xl font-black text-center text-green-600">
-                      📊 ติดตามความก้าวหน้า
+                  <div className="bg-yellow-100 rounded-2xl p-2 mb-4">
+                    <h2 className="text-3xl font-black text-center text-yellow-600">
+                      🧠 แบบทดสอบสุดสนุก!
                     </h2>
                   </div>
                   <h3 className="text-gray-700 text-center text-lg font-semibold leading-relaxed">
-                    ระบบช่วยให้ผู้ปกครอง 👨‍👩‍👧
+                    ทดสอบความรู้ของน้องๆ 💡
                     <br />
-                    และเด็กๆ ติดตามผล
+                    มีมินิเกมสําหรับเด็กๆ
                     <br />
-                    ได้ง่ายและสนุก! 🏆
+                    และเรียนรู้ไปพร้อมความสนุก! 🏅
                   </h3>
                 </div>
               </div>

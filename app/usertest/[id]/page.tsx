@@ -7,6 +7,8 @@ import Footer from "@/components/Footer";
 import { useRouter, useParams } from "next/navigation";
 import { supabase } from "@/lib/supabaseClient";
 import { IoMdRefresh } from "react-icons/io";
+import Confetti from "react-confetti";
+import { useWindowSize } from "react-use";
 
 type Vocabulary = {
   vocab_id: number;
@@ -30,7 +32,7 @@ type User = {
   user_image_url: string;
 };
 
-export default function () {
+export default function page() {
   const router = useRouter();
   const id = useParams().id;
 
@@ -42,6 +44,7 @@ export default function () {
   const [options, setOptions] = useState<string[]>([]);
 
   const [user, setUser] = useState<User | null>(null);
+  const { width, height } = useWindowSize();
 
   const QUIZ_LENGTH = 10; //
 
@@ -201,9 +204,27 @@ export default function () {
   if (quizCompleted) {
     // หน้าแสดงผลสรุปคะแนนเมื่อทำแบบทดสอบเสร็จสิ้น
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-2000 flex flex-col">
+      <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-200 overflow-hidden">
+        {/* 🎆 แสดงพลุเมื่อได้ 10/10 */}
+        {score === QUIZ_LENGTH && (
+          <Confetti
+            width={width}
+            height={height}
+            numberOfPieces={400}
+            gravity={0.3}
+            recycle={false}
+          />
+        )}
+        {/*ลาย background*/}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-300 rounded-full opacity-40 animate-bounce"></div>
+          <div className="absolute top-32 right-20 w-32 h-32 bg-pink-400 rounded-full opacity-30 animate-pulse"></div>
+          <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-blue-300 rounded-full opacity-50 animate-bounce delay-100"></div>
+          <div className="absolute top-1/2 right-10 w-28 h-28 bg-purple-300 rounded-full opacity-40 animate-pulse delay-200"></div>
+          <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce delay-300"></div>
+        </div>
         {/* Navbar */}
-        <div className="relative z-40">
+        <div className="relative ">
           <NavBarUser />
         </div>
 
@@ -245,9 +266,17 @@ export default function () {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-indigo-200">
+    <div className="relative flex flex-col min-h-screen bg-gradient-to-br from-yellow-100 via-pink-100 to-purple-200 overflow-hidden">
+      {/*ลาย background*/}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-300 rounded-full opacity-40 animate-bounce"></div>
+        <div className="absolute top-32 right-20 w-32 h-32 bg-pink-400 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-blue-300 rounded-full opacity-50 animate-bounce delay-100"></div>
+        <div className="absolute top-1/2 right-10 w-28 h-28 bg-purple-300 rounded-full opacity-40 animate-pulse delay-200"></div>
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce delay-300"></div>
+      </div>
       {/* Navbar */}
-      <div className="relative z-40">
+      <div className="relative">
         <NavBarUser />
       </div>
       {/* ขยายเต็มพื้นที่ว่างใน flex container โดยใช้ flex-grow */}
@@ -274,7 +303,7 @@ export default function () {
               </button>
             </div>
 
-            {/* Quiz Card */}
+            {/* Quiz Container */}
             <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-indigo-200/30">
               {/* Question Header */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">

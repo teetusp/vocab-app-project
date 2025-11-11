@@ -8,6 +8,7 @@ import Footer from "../../../components/Footer";
 import { supabase } from "@/lib/supabaseClient";
 import SweetAlert from "sweetalert2";
 import { IoIosArrowBack } from "react-icons/io";
+import { FaRegEdit } from "react-icons/fa";
 type User = {
   id: string;
   fullname: string;
@@ -230,7 +231,7 @@ export default function page() {
                 onClick={() => setIsEditing(true)}
                 className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
               >
-                Edit Profile
+              <FaRegEdit className="mr-2 text-lg" />  Edit Profile
               </button>
             )}
           </div>

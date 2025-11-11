@@ -94,6 +94,15 @@ export default function page() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200">
+      {/*ลาย background*/}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-10 left-10 w-24 h-24 bg-yellow-300 rounded-full opacity-40 animate-bounce"></div>
+        <div className="absolute top-32 right-20 w-32 h-32 bg-pink-400 rounded-full opacity-30 animate-pulse"></div>
+        <div className="absolute bottom-20 left-1/4 w-20 h-20 bg-blue-300 rounded-full opacity-50 animate-bounce delay-100"></div>
+        <div className="absolute top-1/2 right-10 w-28 h-28 bg-purple-300 rounded-full opacity-40 animate-pulse delay-200"></div>
+        <div className="absolute bottom-40 right-1/3 w-24 h-24 bg-green-300 rounded-full opacity-30 animate-bounce delay-300"></div>
+      </div>
+
       <div className="relative z-40">
         <NavBarUser />
       </div>
@@ -102,7 +111,7 @@ export default function page() {
         {/* เนื้อหาของหน้าเพจ  */}
         <div className="p-6 md:p-10 max-w-7xl mx-auto">
           {/* ส่วนหัวเรื่อง */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 mt-5">
             <div>
               <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-sm">
                 ประวัติการค้นหา
