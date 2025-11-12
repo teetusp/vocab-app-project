@@ -276,8 +276,12 @@ export default function page() {
         Swal.fire({
           title: "🎉 ยินดีด้วย!",
           html: `
-    คะแนนรวม: <b>${finalScore}</b><br/>
-    เวลา: <b>${formatTimeForSupabase(elapsedTime)}</b>
+    <div style="font-size: 20px;">
+      Your score: <b style="font-size: 24px;">${finalScore}</b><br/>
+      Time achieved: <b style="font-size: 24px;">${formatTimeForSupabase(
+        elapsedTime
+      )}</b>
+    </div>
   `,
           icon: "success",
           confirmButtonText: "OK",
@@ -356,13 +360,13 @@ export default function page() {
         <div className="flex-grow p-4 md:p-6 lg:p-10 w-full">
           <div className="max-w-7xl mx-auto space-y-6">
             {/* Header Section */}
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white/40 backdrop-blur-sm p-4 md:p-6 rounded-2xl">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-4 bg-white/40 backdrop-blur-sm p-4 md:p-6 rounded-2xl mt-6">
               <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-indigo-600 drop-shadow-sm">
-                🎮 เกมจับคู่คำศัพท์
+                🧩 Matching Game
               </h1>
               <button
                 onClick={handleClickBack}
-                className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-base md:text-lg flex items-center gap-2 whitespace-nowrap"
+                className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-base md:text-lg flex items-center gap-2 whitespace-nowrap cursor-pointer"
               >
                 <IoIosArrowBack className="text-xl" /> Back to Dashboard
               </button>
@@ -383,7 +387,7 @@ export default function page() {
                   <button
                     key={diff}
                     onClick={() => setActiveTab(diff)}
-                    className={`px-5 md:px-7 py-2.5 md:py-3 font-semibold rounded-full transition-all text-sm md:text-base ${
+                    className={`px-5 md:px-7 py-2.5 md:py-3 font-semibold rounded-full transition-all text-sm md:text-base cursor-pointer ${
                       activeTab === diff
                         ? "bg-indigo-500 text-white shadow-lg scale-105"
                         : "bg-gray-100 text-gray-700 hover:bg-indigo-100 hover:scale-105"
@@ -452,7 +456,7 @@ export default function page() {
                           colSpan={4}
                           className="py-12 text-center text-gray-500 text-base"
                         >
-                          ยังไม่มีข้อมูลในตารางผู้นำ
+                          No data in the leaderboard yet please wait......
                         </td>
                       </tr>
                     )}
@@ -472,7 +476,7 @@ export default function page() {
                   </span>
                   <button
                     onClick={resetGame}
-                    className="flex items-center justify-center w-12 h-12 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-shadow shadow-md"
+                    className="flex items-center justify-center w-12 h-12 bg-indigo-500 text-white rounded-full hover:bg-indigo-600 transition-shadow shadow-md cursor-pointer"
                   >
                     <VscDebugRestart size={24} />
                   </button>
@@ -503,7 +507,7 @@ export default function page() {
               {/* Difficulty Selection */}
               <div className="mb-8">
                 <h3 className="text-center text-lg md:text-xl font-bold text-gray-700 mb-4">
-                  เลือกระดับความยาก
+                  Choose difficulty
                 </h3>
                 <div className="flex justify-center gap-3 md:gap-4 flex-wrap">
                   {["easy", "medium", "hard"].map((level) => (
@@ -512,7 +516,7 @@ export default function page() {
                       onClick={() =>
                         setDifficulty(level as "easy" | "medium" | "hard")
                       }
-                      className={`px-6 md:px-10 py-3 md:py-4 rounded-2xl font-bold transition-all text-sm md:text-base shadow-md ${
+                      className={`px-6 md:px-10 py-3 md:py-4 rounded-2xl font-bold transition-all text-sm md:text-base shadow-md  cursor-pointer ${
                         difficulty === level
                           ? "bg-indigo-500 text-white shadow-xl scale-105 border-2 border-indigo-600"
                           : "bg-white text-gray-700 border-2 border-gray-300 hover:bg-indigo-100 hover:border-indigo-300 hover:scale-105"
@@ -566,7 +570,7 @@ export default function page() {
                         {flipped.includes(card) ||
                         matched.includes(card.key) ? (
                           <Image
-                            src={card.vocab_image_url || "/placeholder.svg"}
+                            src={card.vocab_image_url}
                             alt={card.english}
                             width={120}
                             height={120}
@@ -580,7 +584,8 @@ export default function page() {
                   ))}
                 </div>
                 <p className="mt-8 text-lg text-gray-700">
-                 <span className="text-red-600">*</span>วิธีการเล่น: คลิก/กด ที่การ์ดเพื่อเริ่มเกม
+                  <span className="text-red-600">*</span>How to play: Click/Tap
+                  on a card to start the game
                 </p>
               </div>
             </div>

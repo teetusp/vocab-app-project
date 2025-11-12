@@ -169,7 +169,7 @@ export default function Page() {
                   <div className="flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
                     <div className="bg-gradient-to-br from-blue-200 to-indigo-300 rounded-full p-6">
                       <Image
-                        src={card || "/placeholder.svg"}
+                        src={card}
                         alt="card"
                         className="w-20 h-20"
                       />
@@ -197,7 +197,7 @@ export default function Page() {
                   <div className="flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
                     <div className="bg-gradient-to-br from-orange-200 to-yellow-300 rounded-full p-6">
                       <Image
-                        src={design || "/placeholder.svg"}
+                        src={design}
                         alt="design"
                         className="w-20 h-20"
                       />
@@ -225,7 +225,7 @@ export default function Page() {
                   <div className="flex items-center justify-center mb-6 transform group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300">
                     <div className="bg-gradient-to-br from-green-200 to-teal-300 rounded-full p-6">
                       <Image
-                        src={follow || "/placeholder.svg"}
+                        src={follow}
                         alt="follow"
                         className="w-20 h-20"
                       />

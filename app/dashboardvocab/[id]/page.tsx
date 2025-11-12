@@ -170,16 +170,16 @@ export default function page() {
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-sm">
-                คลังคำศัพท์
+                Vocabulary Lists
               </h1>
               <h2 className="text-gray-600 text-lg">
-                สำรวจคำศัพท์ตามหมวดหมู่ที่คุณสนใจ
+                Explore words by the categories you're interested in.
               </h2>
             </div>
 
             <button
               onClick={handleClickBack}
-              className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+              className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center cursor-pointer"
             >
               <IoIosArrowBack className="text-xl mr-2" /> Back to Dashboard
             </button>
@@ -198,7 +198,7 @@ export default function page() {
                     : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"
                 }`}
               >
-                <Image src={selectall} alt="ทั้งหมด" className="w-6 h-6" />
+                <Image src={selectall} alt="ทั้งหมด" className="w-6 h-6 cursor-pointer" />
                 <span>ทั้งหมด</span>
               </button>
 
@@ -207,7 +207,7 @@ export default function page() {
                 <button
                   key={category.cat_id}
                   onClick={() => setActiveCategory(category.cat_id)}
-                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-semibold text-sm transition duration-200 shadow-md ${
+                  className={`flex items-center space-x-2 px-5 py-3 rounded-full font-semibold text-sm transition duration-200 shadow-md cursor-pointer ${
                     activeCategory === category.cat_id
                       ? "bg-indigo-500 text-white shadow-indigo-300"
                       : "bg-white text-gray-700 hover:bg-gray-50 border border-gray-200"

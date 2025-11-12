@@ -311,7 +311,7 @@ export default function page() {
               <>
                 <div className="relative w-40 h-40 mb-6 rounded-2xl overflow-hidden ">
                   <img
-                    src={vocabs.vocab_image_url || "/placeholder.png"}
+                    src={vocabs.vocab_image_url}
                     alt={vocabs.english}
                     className="w-full h-full object-cover transition-transform duration-500  rounded-2xl"
                   />

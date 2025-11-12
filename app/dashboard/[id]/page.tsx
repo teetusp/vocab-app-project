@@ -10,6 +10,8 @@ import matching from "../../../assets/matching.png";
 import Footer from "../../../components/Footer";
 import { supabase } from "@/lib/supabaseClient";
 import NavBarUser from "../../../components/NavBarUser";
+import hangman from "../../../assets/figure.png";
+import build from "../../../assets/build.png";
 type User = {
   id: string;
   fullname: string;
@@ -31,7 +33,7 @@ export default function page() {
           return;
         }
 
-        // 🔹 ดึงข้อมูลผู้ใช้จากตาราง user_tb
+        // ดึงข้อมูลผู้ใช้จากตาราง user_tb
         const { data, error } = await supabase
           .from("user_tb")
           .select("user_id, fullname, user_image_url")
@@ -118,11 +120,11 @@ export default function page() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <span className="text-5xl ">👋</span>
             <h2 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">
-              สวัสดี, {user?.fullname}!
+              Welcome, {user?.fullname}!
             </h2>
           </div>
           <p className="text-gray-700 mb-8 text-xl font-medium">
-            พร้อมเรียนรู้คำศัพท์ใหม่หรือยัง? เลือกหมวดหมู่ที่คุณสนใจได้เลย 💡
+            Ready to learn new words? Pick a category that interests you! 💡{" "}
           </p>
 
           {/* การ์ดเมนู - ปรับให้สีสันสดใสและมีแอนิเมชั่นที่สนุกขึ้น */}
@@ -135,12 +137,12 @@ export default function page() {
               <div className="group h-52 bg-gradient-to-br from-blue-400 via-cyan-400 to-indigo-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-blue-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <Image
-                  src={alpahabet || "/placeholder.svg"}
+                  src={alpahabet}
                   alt="alphabet"
                   className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
                 />
                 <span className="text-2xl group-hover:scale-110 transition-transform">
-                  คำศัพท์ทั้งหมด
+                  Vacabulary
                 </span>
               </div>
             </Link>
@@ -153,12 +155,12 @@ export default function page() {
               <div className="group h-52 bg-gradient-to-br from-green-400 via-lime-400 to-emerald-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-green-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 <Image
-                  src={history || "/placeholder.svg"}
+                  src={history}
                   alt="history"
                   className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
                 />
                 <span className="text-2xl group-hover:scale-110 transition-transform">
-                  คำศัพท์ที่เรียนแล้ว
+                  Words you’ve learned
                 </span>
               </div>
             </Link>
@@ -169,12 +171,45 @@ export default function page() {
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                 <Image
-                  src={test || "/placeholder.svg"}
+                  src={test}
                   alt="test"
                   className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
                 />
                 <span className="text-2xl group-hover:scale-110 transition-transform">
-                  แบบทดสอบ
+                  Quiz
+                </span>
+              </div>
+            </Link>
+
+            {/* 🔥 หัวข้อ Mini Games */}
+            <div className="col-span-full text-center mt-12 mb-4">
+              <h2>
+                <span className="text-5xl ">🎮</span>{" "}
+                <span className="text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-purple-500 via-pink-500 to-orange-500 drop-shadow-lg">
+                  {" "}
+                  Mini Games
+                </span>
+              </h2>
+              <p className="text-gray-700 mt-2 text-lg font-medium">
+                Practice vocabulary through fun and interactive games! 🧠✨
+              </p>
+            </div>
+
+            {/* การ์ดเกม */}
+            <Link
+              href={`/wordbuilder/${user?.id}`}
+              onClick={handleClickMatchingGame}
+            >
+              <div className="group h-52 bg-gradient-to-br from-orange-400 via-red-400 to-yellow-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-indigo-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
+                <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+
+                <Image
+                  src={build}
+                  alt="matching"
+                  className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
+                />
+                <span className="text-2xl group-hover:scale-110 transition-transform">
+                  Word Builder
                 </span>
               </div>
             </Link>
@@ -186,29 +221,27 @@ export default function page() {
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                 <Image
-                  src={matching || "/placeholder.svg"}
-                  alt="test"
+                  src={matching}
+                  alt="matching"
                   className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
                 />
                 <span className="text-2xl group-hover:scale-110 transition-transform">
-                  เกมจับคู่
+                  Matching Game
                 </span>
               </div>
             </Link>
-            <Link
-              href={`/wordbuilder/${user?.id}`}
-              
-            >
-              <div className="group h-52 bg-gradient-to-br from-yellow-400 via-gold-600 to-orange-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-pink-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
+
+            <Link href={`/hangman/${user?.id}`}>
+              <div className="group h-52 bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 rounded-3xl flex flex-col items-center justify-center text-white font-bold transition-all duration-300 transform hover:-translate-y-3 hover:shadow-2xl hover:shadow-yellow-400 hover:rotate-2 relative overflow-hidden border-4 border-white">
                 <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
                 <Image
-                  src={matching || "/placeholder.svg"}
-                  alt="test"
+                  src={hangman}
+                  alt="hangman"
                   className="w-20 h-20 mb-3 drop-shadow-2xl group-hover:scale-110 transition-transform"
                 />
                 <span className="text-2xl group-hover:scale-110 transition-transform">
-                  เกมจับคู่
+                  Hangman Game
                 </span>
               </div>
             </Link>

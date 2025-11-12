@@ -125,7 +125,7 @@ export default function page() {
               className="flex items-center space-x-2 cursor-pointer transform transition-transform hover:scale-110 hover:rotate-3"
             >
               <Image
-                src={rocket || "/placeholder.svg"}
+                src={rocket}
                 alt="Logo"
                 className="w-12 h-12 drop-shadow-lg animate-pulse"
               />

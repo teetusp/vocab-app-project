@@ -232,10 +232,10 @@ export default function page() {
         <div className="flex-1 flex items-center justify-center p-6">
           <div className="w-full max-w-lg bg-white/90 backdrop-blur-md p-10 rounded-3xl shadow-2xl border border-green-400/40 text-center">
             <h2 className="text-4xl  font-extrabold text-green-600 mb-4 animate-bounce">
-              🎉 สิ้นสุดแบบทดสอบ 🎉
+              🎉 Quiz Completed 🎉
             </h2>
             <h1 className="text-lg md:text-xl text-gray-600 mb-6">
-              คุณทำคะแนนได้:
+              Your score is:
             </h1>
             {/* คะแนน */}
             <h1 className="text-6xl md:text-7xl font-black text-pink-500 mb-8 animate-pulse">
@@ -246,13 +246,13 @@ export default function page() {
             <div className="flex flex-col gap-4">
               <button
                 onClick={generateQuiz}
-                className="w-full px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg"
+                className="w-full px-8 py-3 bg-gradient-to-r from-pink-500 to-pink-600 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg cursor-pointer"
               >
                 <IoMdRefresh className="text-xl" /> Try Again
               </button>
               <button
                 onClick={handleClickBack}
-                className="w-full px-8 py-3 bg-gradient-to-r from-gray-600 to-gray-800 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg"
+                className="w-full px-8 py-3 bg-gradient-to-r from-gray-600 to-gray-800 text-white font-semibold rounded-xl shadow-lg hover:scale-105 hover:shadow-2xl transition transform duration-200 flex items-center justify-center gap-2 text-lg cursor-pointer"
               >
                 <IoIosArrowBack className="text-xl" /> Back to Dashboard
               </button>
@@ -285,19 +285,19 @@ export default function page() {
         <div className="p-6 md:p-12">
           <div className="max-w-5xl mx-auto">
             {/* Header */}
-            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+            <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4 mt-8">
               <div>
                 <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-lg">
-                  แบบทดสอบ
+                  Quiz
                 </h1>
                 <h2 className="text-gray-500 text-lg md:text-xl">
-                  แบบทดสอบความรู้เกี่ยวกับคําศัพท์
+                  Vocabulary Test
                 </h2>
               </div>
 
               <button
                 onClick={handleClickBack}
-                className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+                className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center cursor-pointer"
               >
                 <IoIosArrowBack className="text-xl mr-2" /> Back to Dashboard
               </button>
@@ -308,16 +308,16 @@ export default function page() {
               {/* Question Header */}
               <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
                 <h3 className="text-sm font-medium text-pink-500">
-                  คำถามที่ {currentQuestionIndex + 1} จาก {QUIZ_LENGTH}
+                  Question {currentQuestionIndex + 1} of {QUIZ_LENGTH}
                 </h3>
                 <h3 className="text-sm font-medium text-gray-700">
-                  คะแนน: {score}
+                  Your score: {score}
                 </h3>
               </div>
 
               {/* Question */}
               <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                คำศัพท์ภาษาไทยคือ:
+                The Thai word is:
               </h3>
               <div className="bg-pink-50 p-6 rounded-2xl shadow-inner mb-8">
                 <h3 className="text-5xl md:text-6xl font-extrabold text-pink-600 text-center animate-pulse">
@@ -329,22 +329,22 @@ export default function page() {
               <div className="flex flex-col space-y-4">
                 {currentQuestion?.options.map((option, index) => {
                   let buttonClass =
-                    "p-4 rounded-xl shadow-md text-lg font-medium transition-all border-2";
+                    "p-4 rounded-xl shadow-md text-lg font-medium transition-all border-2 cursor-pointer";
 
                   if (currentQuestion.answered) {
                     if (option === currentQuestion.correctAnswer) {
                       buttonClass +=
-                        " bg-green-500 text-white border-green-600 shadow-lg scale-105";
+                        " bg-green-500 text-white border-green-600 shadow-lg scale-105 cursor-pointer";
                     } else if (option === currentQuestion.userAnswer) {
                       buttonClass +=
-                        " bg-red-500 text-white border-red-600 shadow-md line-through";
+                        " bg-red-500 text-white border-red-600 shadow-md line-through cursor-pointer";
                     } else {
                       buttonClass +=
-                        " bg-gray-100 text-gray-800 border-gray-300";
+                        " bg-gray-100 text-gray-800 border-gray-300 cursor-pointer";
                     }
                   } else {
                     buttonClass +=
-                      " bg-white text-gray-800 hover:bg-indigo-100 hover:scale-105";
+                      " bg-white text-gray-800 hover:bg-indigo-100 hover:scale-105 cursor-pointer";
                   }
 
                   return (
@@ -359,6 +359,10 @@ export default function page() {
                   );
                 })}
               </div>
+              <p className="mt-8 text-lg text-gray-700 text-center">
+                <span className="text-red-600">*</span>How to play: Click/Tap on
+                an answer to start the Quiz
+              </p>
             </div>
           </div>
         </div>

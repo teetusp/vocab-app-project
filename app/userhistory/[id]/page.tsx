@@ -109,19 +109,19 @@ export default function page() {
       {/* ขยายเต็มพื้นที่ว่างใน flex container โดยใช้ flex-grow */}
       <div className="flex-grow p-6 md:p-10 max-w-6xl mx-auto w-full">
         {/* เนื้อหาของหน้าเพจ  */}
-        <div className="p-6 md:p-10 max-w-7xl mx-auto">
+        <div className="p-6 md:p-10 max-w-7xl mx-auto mt-10">
           {/* ส่วนหัวเรื่อง */}
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 mt-5">
+          <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
             <div>
               <h1 className="text-4xl md:text-5xl font-extrabold mb-2 text-indigo-600 drop-shadow-sm">
-                ประวัติการค้นหา
+                Search History
               </h1>
-              <h2 className="text-gray-600 text-lg">ประวัติการค้นหาคําศัพท์</h2>
+              <h2 className="text-gray-600 text-lg">Search your vocabulary</h2>
             </div>
 
             <button
               onClick={handleClickBack}
-              className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center"
+              className="mt-4 md:mt-0 px-8 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-lg flex items-center cursor-pointer"
             >
               <IoIosArrowBack className="text-xl mr-2" /> Back to Dashboard
             </button>
@@ -140,7 +140,7 @@ export default function page() {
                     <div
                       key={vocab.vocab_id}
                       className="bg-gradient-to-br from-indigo-50 to-pink-50 border border-indigo-200/50 
-                        rounded-2xl shadow-lg transform transition-all duration-300 
+                        rounded-2xl shadow-lg transform transition-all duration-300  cursor-pointer
                         hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:border-indigo-400/70"
                     >
                       {/* รูปคำศัพท์ */}
@@ -172,7 +172,7 @@ export default function page() {
             ) : (
               // แสดงข้อความถ้าไม่มีประวัติ
               <div className="text-center text-gray-500 text-lg py-10">
-                ไม่มีประวัติการค้นหา
+                No search history
               </div>
             )}
           </div>

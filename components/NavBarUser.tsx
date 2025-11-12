@@ -9,6 +9,9 @@ import { FaEdit } from "react-icons/fa";
 import { CiLogout } from "react-icons/ci";
 import { CgProfile } from "react-icons/cg";
 import { supabase } from "@/lib/supabaseClient";
+import matching from "../assets/matching.png";
+import hangman from "../assets/figure.png";
+import build from "../assets/build.png";
 
 type User = {
   id: string;
@@ -101,7 +104,7 @@ export default function Navbar() {
           >
             <div className="relative">
               <Image
-                src={rocket || "/placeholder.svg"}
+                src={rocket}
                 alt="Logo"
                 className="w-12 h-12 drop-shadow-2xl animate-bounce"
               />
@@ -124,7 +127,7 @@ export default function Navbar() {
               href={`/dashboardvocab/${user?.id}`}
               className="relative text-lg font-bold text-white hover:text-yellow-300 transition-all duration-200 px-3 py-2 rounded-xl hover:bg-white/20 hover:scale-110 transform"
             >
-              Vocabular
+              Vocabulary
             </Link>
             <Link
               href={`/userhistory/${user?.id}`}
@@ -141,7 +144,7 @@ export default function Navbar() {
             <div className="relative">
               <button
                 onClick={() => setIsMiniGameOpen(!isMiniGameOpen)}
-                className="flex items-center space-x-1 text-lg font-bold text-white hover:text-yellow-300 transition-all duration-200 px-3 py-2 rounded-xl hover:bg-white/20 hover:scale-110 transform"
+                className="flex items-center space-x-1 text-lg font-bold text-white hover:text-yellow-300 transition-all duration-200 px-3 py-2 rounded-xl hover:bg-white/20 hover:scale-110 transform cursor-pointer"
               >
                 <span>Mini Game</span>
                 <IoIosArrowDropdown
@@ -150,14 +153,52 @@ export default function Navbar() {
                   }`}
                 />
               </button>
-
+              {/*Dropdown menu minigmaes*/}
               {isMiniGameOpen && (
-                <div className="absolute right-0 mt-3 w-55 bg-gradient-to-br from-white to-purple-50 rounded-2xl shadow-2xl border-4 border-purple-300 overflow-hidden animate-in slide-in-from-top-2">
+                <div className="absolute right-0 mt-3 w-64 bg-gradient-to-br from-white via-purple-50 to-purple-100 rounded-3xl shadow-2xl border-4 border-purple-300 overflow-hidden animate-in slide-in-from-top-2 transition-all duration-300">
+                  <Link
+                    href={`/wordbuilder/${user?.id}`}
+                    className="flex items-center gap-3 px-6 py-4 text-gray-800 font-semibold hover:bg-purple-200/70 hover:pl-8 transition-all duration-300"
+                  >
+                    <Image
+                      src={build}
+                      alt="build Game"
+                      width={28}
+                      height={28}
+                      className="drop-shadow-md"
+                    />
+                    <span>Word Builder</span>
+                  </Link>
+                  <hr className="border-purple-200 mx-6" />
+
                   <Link
                     href={`/matchinggame/${user?.id}`}
-                    className="w-full flex justify-center px-5 py-4 text-gray-800 hover:bg-purple-200 transition-all font-bold hover:pl-7 duration-200"
+                    className="flex items-center gap-3 px-6 py-4 text-gray-800 font-semibold hover:bg-purple-200/70 hover:pl-8 transition-all duration-300"
                   >
-                  🎮 Matching Game
+                    <Image
+                      src={matching}
+                      alt="Matching Game"
+                      width={28}
+                      height={28}
+                      className="drop-shadow-md"
+                    />
+                    <span>Matching Game</span>
+                  </Link>
+
+                  <hr className="border-purple-200 mx-6" />
+
+                  <Link
+                    href={`/hangman/${user?.id}`}
+                    className="flex items-center gap-3 px-6 py-4 text-gray-800 font-semibold hover:bg-purple-200/70 hover:pl-8 transition-all duration-300"
+                  >
+                    <Image
+                      src={hangman}
+                      alt="Hangman Game"
+                      width={28}
+                      height={28}
+                      className="drop-shadow-md"
+                    />
+                    <span>Hangman Game</span>
                   </Link>
                 </div>
               )}
@@ -171,7 +212,7 @@ export default function Navbar() {
             >
               <img
                 className="w-10 h-10 rounded-full object-cover border-4 border-white shadow-md"
-                src={user?.user_image_url || "/placeholder.svg"}
+                src={user?.user_image_url }
                 alt="User profile"
               />
               <span className="hidden md:inline font-bold text-gray-800">

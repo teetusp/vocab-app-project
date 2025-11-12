@@ -220,7 +220,7 @@ export default function page() {
               onClick={() => (window.location.href = "/")}
               className="flex items-center space-x-2 cursor-pointer transform transition-all duration-300 hover:scale-110 hover:rotate-3"
             >
-              <Image src={rocket || "/placeholder.svg"} alt="Logo" className="w-12 h-12 mr-2 animate-bounce" />
+              <Image src={rocket} alt="Logo" className="w-12 h-12 mr-2 animate-bounce" />
               <h1 className="text-3xl font-black tracking-wide">
                 <span className="text-yellow-100 drop-shadow-lg">Card</span>{" "}
                 <span className="text-white drop-shadow-lg">Vocab</span>
@@ -383,7 +383,7 @@ export default function page() {
                 </label>
                 {userimagePreviewUrl && (
                   <img
-                    src={userimagePreviewUrl || "/placeholder.svg"}
+                    src={userimagePreviewUrl}
                     alt="preview"
                     className="w-28 h-28 rounded-2xl object-cover border-4 border-yellow-400 shadow-lg"
                   />

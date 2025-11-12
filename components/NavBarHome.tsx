@@ -36,7 +36,7 @@ export default function NavBar() {
           >
             <div className="relative">
               <Image
-                src={rocket || "/placeholder.svg"}
+                src={rocket}
                 alt="Logo"
                 className="w-12 h-12 drop-shadow-2xl animate-pulse"
               />

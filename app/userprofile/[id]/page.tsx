@@ -108,7 +108,7 @@ export default function page() {
         return;
       }
 
-      router.push(`/dashboard/${id}`);
+      router.push(`/`);
     }
   }
   return (
