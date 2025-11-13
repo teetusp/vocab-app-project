@@ -41,7 +41,7 @@ export default function page() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [score, setScore] = useState(0);
   const [quizCompleted, setQuizCompleted] = useState(false);
-  const [options, setOptions] = useState<string[]>([]);
+  const [quizStarted, setQuizStarted] = useState(false);
 
   const [user, setUser] = useState<User | null>(null);
   const { width, height } = useWindowSize();
@@ -304,65 +304,89 @@ export default function page() {
             </div>
 
             {/* Quiz Container */}
-            <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-indigo-200/30">
-              {/* Question Header */}
-              <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
-                <h3 className="text-sm font-medium text-pink-500">
-                  Question {currentQuestionIndex + 1} of {QUIZ_LENGTH}
-                </h3>
-                <h3 className="text-sm font-medium text-gray-700">
-                  Your score: {score}
-                </h3>
-              </div>
+            {/* Quiz Container */}
+            <div className="bg-white/90 backdrop-blur-md p-8 rounded-3xl shadow-2xl border border-indigo-200/30 text-center">
+              {!quizStarted ? (
+                <>
+                  <h2 className="text-3xl md:text-4xl font-extrabold text-indigo-600 mb-4">
+                    Ready to Start the Quiz?
+                  </h2>
+                  <p className="text-gray-600 mb-8 text-lg">
+                    คำที่จะทดสอบจะเอามาจาก vocabulary ทั้งหมด Ready?!
+                  </p>
+                  <button
+                    onClick={() => {
+                      setQuizStarted(true);
+                      generateQuiz(); // เริ่มสร้างคำถามเมื่อกดปุ่ม
+                    }}
+                    className="px-10 py-4 bg-gradient-to-r from-indigo-500 to-purple-600 text-white font-bold rounded-2xl shadow-lg hover:scale-105 hover:shadow-2xl transition-all text-lg cursor-pointer"
+                  >
+                    🚀 Start Quiz
+                  </button>
+                </>
+              ) : (
+                <>
+                  {/* Question Header */}
+                  <div className="flex justify-between items-center mb-6 border-b border-gray-200 pb-3">
+                    <h3 className="text-sm font-medium text-pink-500">
+                      Question {currentQuestionIndex + 1} of {QUIZ_LENGTH}
+                    </h3>
+                    <h3 className="text-sm font-medium text-gray-700">
+                      Your score: {score}
+                    </h3>
+                  </div>
 
-              {/* Question */}
-              <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
-                The Thai word is:
-              </h3>
-              <div className="bg-pink-50 p-6 rounded-2xl shadow-inner mb-8">
-                <h3 className="text-5xl md:text-6xl font-extrabold text-pink-600 text-center animate-pulse">
-                  {currentQuestion?.thai}
-                </h3>
-              </div>
+                  {/* Question */}
+                  <h3 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                    The Thai word is:
+                  </h3>
+                  <div className="bg-pink-50 p-6 rounded-2xl shadow-inner mb-8">
+                    <h3 className="text-5xl md:text-6xl font-extrabold text-pink-600 text-center animate-pulse">
+                      {currentQuestion?.thai}
+                    </h3>
+                  </div>
 
-              {/* Options */}
-              <div className="flex flex-col space-y-4">
-                {currentQuestion?.options.map((option, index) => {
-                  let buttonClass =
-                    "p-4 rounded-xl shadow-md text-lg font-medium transition-all border-2 cursor-pointer";
+                  {/* Options */}
+                  <div className="flex flex-col space-y-4">
+                    {currentQuestion?.options.map((option, index) => {
+                      let buttonClass =
+                        "p-4 rounded-xl shadow-md text-lg font-medium transition-all border-2 cursor-pointer";
 
-                  if (currentQuestion.answered) {
-                    if (option === currentQuestion.correctAnswer) {
-                      buttonClass +=
-                        " bg-green-500 text-white border-green-600 shadow-lg scale-105 cursor-pointer";
-                    } else if (option === currentQuestion.userAnswer) {
-                      buttonClass +=
-                        " bg-red-500 text-white border-red-600 shadow-md line-through cursor-pointer";
-                    } else {
-                      buttonClass +=
-                        " bg-gray-100 text-gray-800 border-gray-300 cursor-pointer";
-                    }
-                  } else {
-                    buttonClass +=
-                      " bg-white text-gray-800 hover:bg-indigo-100 hover:scale-105 cursor-pointer";
-                  }
+                      if (currentQuestion.answered) {
+                        if (option === currentQuestion.correctAnswer) {
+                          buttonClass +=
+                            " bg-green-500 text-white border-green-600 shadow-lg scale-105 cursor-pointer";
+                        } else if (option === currentQuestion.userAnswer) {
+                          buttonClass +=
+                            " bg-red-500 text-white border-red-600 shadow-md line-through cursor-pointer";
+                        } else {
+                          buttonClass +=
+                            " bg-gray-100 text-gray-800 border-gray-300 cursor-pointer";
+                        }
+                      } else {
+                        buttonClass +=
+                          " bg-white text-gray-800 hover:bg-indigo-100 hover:scale-105 cursor-pointer";
+                      }
 
-                  return (
-                    <button
-                      key={index}
-                      onClick={() => handleClickAnswer(option)}
-                      className={buttonClass}
-                      disabled={currentQuestion.answered}
-                    >
-                      {option}
-                    </button>
-                  );
-                })}
-              </div>
-              <p className="mt-8 text-lg text-gray-700 text-center">
-                <span className="text-red-600">*</span>How to play: Click/Tap on
-                an answer to start the Quiz
-              </p>
+                      return (
+                        <button
+                          key={index}
+                          onClick={() => handleClickAnswer(option)}
+                          className={buttonClass}
+                          disabled={currentQuestion.answered}
+                        >
+                          {option}
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <p className="mt-8 text-lg text-gray-700 text-center">
+                    <span className="text-red-600">*</span> Click or tap an
+                    answer to play
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </div>

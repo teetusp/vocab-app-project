@@ -260,7 +260,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-2 text-lg flex items-center space-x-2">
                 <span>👤</span>
-                <span>ชื่อ-นามสกุล</span>
+                <span>ชื่อ-นามสกุล<span className="text-red-500">*</span></span>
               </label>
               <div className="relative">
                 <CiUser className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-purple-500" />
@@ -278,7 +278,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-2 text-lg flex items-center space-x-2">
                 <span>📧</span>
-                <span>อีเมล</span>
+                <span>อีเมล<span className="text-red-500">*</span></span>
               </label>
               <div className="relative">
                 <CiMail className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-pink-500" />
@@ -296,7 +296,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-2 text-lg flex items-center space-x-2">
                 <span>🔒</span>
-                <span>รหัสผ่าน</span>
+                <span>รหัสผ่าน<span className="text-red-500">*</span></span>
               </label>
               <div className="relative">
                 <CiLock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-blue-500" />
@@ -322,7 +322,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-2 text-lg flex items-center space-x-2">
                 <span>🎂</span>
-                <span>วันเกิดของคุณ</span>
+                <span>วันเกิดของคุณ (เดือน/วัน/ปี)<span className="text-red-500">*</span></span>
               </label>
               <div className="relative">
                 <SlCalender className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-green-500" />
@@ -342,7 +342,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-3 text-lg flex items-center space-x-2">
                 <span>👥</span>
-                <span>เพศของคุณ</span>
+                <span>เพศ<span className="text-red-500">*</span></span>
               </label>
               <div className="flex space-x-6">
                 {genderOptions.map((option) => (

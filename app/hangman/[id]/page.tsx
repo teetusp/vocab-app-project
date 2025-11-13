@@ -97,6 +97,29 @@ export default function page() {
     fetchWords();
   }, []);
 
+  const saveHangmanScore = async (score: number) => {
+    if (!user?.user_id) return;
+
+    const { data, error } = await supabase.from("hangman_score_tb").insert([
+      {
+        hm_score: score,
+        user_id: user.user_id,
+      },
+    ]);
+
+    if (error) {
+      console.error("Failed to save Hangman score:", error);
+    } else {
+      console.log("Hangman score saved:", data);
+    }
+  };
+
+  useEffect(() => {
+    if (gameOver) {
+      saveHangmanScore(score);
+    }
+  }, [gameOver]);
+
   // -----------------------
   // เริ่มเกมใหม่
   // -----------------------
@@ -159,7 +182,7 @@ export default function page() {
 
     if (won && !gameWon) {
       setGameWon(true);
-      setScore((prev) => prev + 10); // เพิ่มคะแนน
+      setScore((prev) => prev + 1); // เพิ่มคะแนน
     }
 
     if (wrongGuesses >= maxWrong) setGameOver(true);
@@ -209,7 +232,7 @@ export default function page() {
             cx="80"
             cy="50"
             r="10"
-            fill="#facc15"
+            fill="#000000ff"
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5 }}
@@ -223,7 +246,7 @@ export default function page() {
             y1="60"
             x2="80"
             y2="100"
-            stroke="#f59e0b"
+            stroke="#000000ff"
             strokeWidth="4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -238,7 +261,7 @@ export default function page() {
             y1="70"
             x2="60"
             y2="90"
-            stroke="#f59e0b"
+            stroke="#000000ff"
             strokeWidth="4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -253,7 +276,7 @@ export default function page() {
             y1="70"
             x2="100"
             y2="90"
-            stroke="#f59e0b"
+            stroke="#000000ff"
             strokeWidth="4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -268,7 +291,7 @@ export default function page() {
             y1="100"
             x2="60"
             y2="130"
-            stroke="#f59e0b"
+            stroke="#000000ff"
             strokeWidth="4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -283,7 +306,7 @@ export default function page() {
             y1="100"
             x2="100"
             y2="130"
-            stroke="#f59e0b"
+            stroke="#000000ff"
             strokeWidth="4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -353,7 +376,9 @@ export default function page() {
                 </h2>
                 <p className="text-lg text-gray-700 mb-8">
                   เดาตัวอักษรให้ถูกต้อง ก่อนที่คนจะถูกแขวน! <br />
-                  <span>Guess the letter correctly before the person is hanged!</span>
+                  <span>
+                    Guess the letter correctly before the person is hanged!
+                  </span>
                 </p>
                 <button
                   onClick={startNewGame}
@@ -368,13 +393,15 @@ export default function page() {
             {startGame && gameWon && !gameOver && (
               <div className="relative">
                 <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-indigo-200/50 opacity-30">
-                  <div className="flex justify-center items-center mb-4 ">
-                    <h2 className="text-2xl font-bold text-purple-800 drop-shadow-sm">
+                  <div className="flex justify-between items-center mb-4 w-full">
+                    <div className="flex-1"></div> {/* เว้นที่ด้านซ้าย */}
+                    <h2 className="text-2xl font-bold text-purple-800 drop-shadow-sm text-center flex-1">
                       Hangman
                     </h2>
-                    {/*<div className="text-lg font-bold text-green-600">คะแนน: {score}</div>*/}
+                    <div className="text-lg font-bold text-green-600 flex-1 text-right">
+                      คะแนน: {score}
+                    </div>
                   </div>
-
                   <HangmanFigure wrongGuesses={wrongGuesses} />
 
                   <div className="text-center mb-4 font-bold text-red-600">
@@ -417,7 +444,10 @@ export default function page() {
                       </span>
                     </p>
                     <p className="text-lg text-gray-600 mb-8">
-                      {/* คะแนนของคุณ: <span className="font-bold text-purple-600">{score} คำ</span> */}
+                      คะแนนของคุณ:{" "}
+                      <span className="font-bold text-purple-600">
+                        {score} คำ
+                      </span>
                     </p>
                     <button
                       onClick={loadNextWord}
@@ -434,11 +464,14 @@ export default function page() {
             {startGame && gameOver && (
               <div className="relative">
                 <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-indigo-200/50 opacity-30">
-                  <div className="flex justify-center  items-center mb-4">
-                    <h2 className="text-4xl font-bold text-purple-800">
+                  <div className="flex justify-between items-center mb-4 w-full">
+                    <div className="flex-1"></div> {/* เว้นที่ด้านซ้าย */}
+                    <h2 className="text-2xl font-bold text-purple-800 drop-shadow-sm text-center flex-1">
                       Hangman
                     </h2>
-                    {/*<div className="text-lg font-bold text-green-600">คะแนน: {score}</div>*/}
+                    <div className="text-lg font-bold text-green-600 flex-1 text-right">
+                      คะแนน: {score}
+                    </div>
                   </div>
                   <p className="mb-2 text-gray-700">
                     เดาตัวอักษรจนกว่าจะถูก หรือหมดโอกาส
@@ -475,7 +508,7 @@ export default function page() {
                 </div>
 
                 <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-red-200/50 text-center">
+                  <div className="bg-white/95 backdrop-blur-sm p-8 md:p-12 rounded-3xl shadow-2xl border-2 border-red-200/50 text-center flex flex-col items-center gap-4">
                     <h2 className="text-3xl md:text-4xl font-bold mb-4 text-red-600">
                       😢 Game Over - You Lost
                     </h2>
@@ -485,14 +518,25 @@ export default function page() {
                         {word}
                       </span>
                     </p>
-                    {/*<p className="text-lg text-gray-600 mb-8">
-                      คะแนนรวม: <span className="font-bold text-purple-600">{score} คำ</span>
-                    </p>*/}
+                    <p className="text-lg text-gray-600 mb-8">
+                      คะแนนรวม:{" "}
+                      <span className="font-bold text-purple-600">
+                        {score} คำ
+                      </span>
+                    </p>
+
+                    {/* ปุ่มอยู่ตรงกลาง กล่องเรียงแนวตั้ง */}
                     <button
                       onClick={startNewGame}
-                      className="px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-xl rounded-xl shadow-lg hover:from-blue-600 hover:to-indigo-700 transition transform hover:scale-105 cursor-pointer"
+                      className="px-8 py-4 bg-gradient-to-r from-blue-500 to-indigo-600 text-white font-bold text-xl rounded-xl shadow-lg hover:from-blue-600 hover:to-indigo-700 transition transform hover:scale-105 cursor-pointer w-full max-w-xs"
                     >
                       Start New Game
+                    </button>
+                    <button
+                      onClick={handleClickBack}
+                      className="px-6 py-3 bg-gray-700 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform hover:scale-105 text-base md:text-lg flex items-center justify-center gap-2 w-full max-w-xs"
+                    >
+                      <IoIosArrowBack className="text-xl" /> Back to Dashboard
                     </button>
                   </div>
                 </div>
@@ -501,11 +545,14 @@ export default function page() {
 
             {startGame && !gameWon && !gameOver && (
               <div className="bg-white p-6 md:p-8 rounded-3xl shadow-2xl border-2 border-indigo-200/50">
-                <div className="flex justify-center  items-center mb-4">
-                  <h2 className="text-4xl font-bold text-purple-800">
+                <div className="flex justify-between items-center mb-4 w-full">
+                  <div className="flex-1"></div> {/* เว้นที่ด้านซ้าย */}
+                  <h2 className="text-2xl font-bold text-purple-800 drop-shadow-sm text-center flex-1">
                     Hangman
                   </h2>
-                  {/*<div className="text-lg font-bold text-green-600">คะแนน: {score}</div>*/}
+                  <div className="text-lg font-bold text-green-600 flex-1 text-right">
+                    คะแนน: {score}
+                  </div>
                 </div>
 
                 {/* แสดง Hangman Figure */}
