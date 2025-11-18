@@ -143,7 +143,7 @@ export default function page() {
         .eq("user_id", user.user_id)
         .order("hm_score", { ascending: false }) // เรียงจากมากไปน้อย
         .limit(1)
-        .single(); // เอาค่าบรรทัดแรก
+        .maybeSingle(); // เอาค่าบรรทัดแรก
 
       if (error) {
         console.error("❌ Failed to fetch highest Hangman score:", error);

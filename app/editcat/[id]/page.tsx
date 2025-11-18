@@ -141,6 +141,7 @@ export default function page() {
         category_name: category_name,
         cat_image_url: image_url,
         staff_id: staff?.staff_id,
+        updated_at: new Date().toISOString(),
       })
       .eq("cat_id", cat_id);
 

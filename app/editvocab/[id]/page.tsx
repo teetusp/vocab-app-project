@@ -71,11 +71,13 @@ export default function page() {
   }, []);
 
   //ดึงข้อมูลจาก supabase มาแสดงหน้าจอตาม id ที่ได้มาจาก url
+  //ดึงข้อมูลจาก supabase มาแสดงหน้าจอตาม id ที่ได้มาจาก url
   useEffect(() => {
     async function fetchData() {
+      // ดึงข้อมูล vocab
       const { data, error } = await supabase
         .from("vocab_tb")
-        .select("vocab_id, english, spelling, thai, vocab_image_url, cat_id")
+        .select("*") // ตรงนี้จะได้ cat_id มาด้วย
         .eq("vocab_id", vocab_id)
         .single();
 
@@ -85,15 +87,24 @@ export default function page() {
         return;
       }
 
-      setEnglish(data.english);
-      setSpelling(data.spelling);
-      setThai(data.thai);
-      setSelectedCategoryId(data.cat_id);
-      setPreviewFile(data.vocab_image_url);
+      if (data) {
+        console.log("ข้อมูลที่ดึงมา:", data); // เช็คดูว่า cat_id มีค่าหรือไม่
+        setEnglish(data.english);
+        setSpelling(data.spelling);
+        setThai(data.thai);
+        setPreviewFile(data.vocab_image_url);
+
+        // ** สำคัญ: แปลงเป็น Number เพื่อให้ชัวร์ว่าตรงกับ value ใน <option>
+        // ถ้า data.cat_id เป็น null ให้ใส่ null
+        setSelectedCategoryId(data.cat_id ? Number(data.cat_id) : null);
+      }
     }
 
-    fetchData();
-  }, []);
+    if (vocab_id) {
+      // เช็คว่ามี id ก่อนค่อยดึง
+      fetchData();
+    }
+  }, [vocab_id]); // ใส่ vocab_id ใน dependency array
 
   useEffect(() => {
     async function fetchCategories() {
@@ -178,7 +189,9 @@ export default function page() {
         spelling: spelling,
         thai: thai,
         vocab_image_url: image_url,
+        cat_id: selectedCategoryId,
         staff_id: staff?.staff_id,
+        updated_at: new Date().toISOString(),
       })
       .eq("vocab_id", vocab_id);
 
@@ -265,12 +278,12 @@ export default function page() {
             <div>
               <label className="block mb-2 font-medium">ประเภทคำ</label>
               <select
-                value={selectedCategoryId ? selectedCategoryId.toString() : ""}
-                onChange={(e) =>
-                  setSelectedCategoryId(
-                    e.target.value ? Number(e.target.value) : null
-                  )
-                }
+                value={selectedCategoryId ?? ""} // ถ้าเป็น null ให้แสดงค่าว่าง
+                onChange={(e) => {
+                  const val = e.target.value;
+                  // แปลงค่าที่เลือกกลับเป็น Number ทันที
+                  setSelectedCategoryId(val === "" ? null : Number(val));
+                }}
                 className="border rounded p-2 w-full"
               >
                 <option value="">-- เลือกประเภทคำ --</option>

@@ -174,6 +174,7 @@ export default function page() {
         password: password,
         birthdate: birthdate,
         user_image_url: image_url,
+        updated_at: new Date().toISOString(),
       })
       .eq("user_id", id);
 
