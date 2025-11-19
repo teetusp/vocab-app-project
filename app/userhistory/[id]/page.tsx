@@ -140,7 +140,7 @@ export default function page() {
                     <div
                       key={vocab.vocab_id}
                       className="bg-gradient-to-br from-indigo-50 to-pink-50 border border-indigo-200/50 
-                        rounded-2xl shadow-lg transform transition-all duration-300  cursor-pointer
+                        rounded-2xl shadow-lg transform transition-all duration-300 
                         hover:scale-105 hover:-translate-y-1 hover:shadow-2xl hover:border-indigo-400/70"
                     >
                       {/* รูปคำศัพท์ */}
