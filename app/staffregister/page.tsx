@@ -181,8 +181,8 @@ export default function page() {
             >
               <Image src={rocket} alt="Logo" className="w-10 h-10 mr-2" />
               <h1 className="text-2xl font-black text-indigo-600 tracking-wide">
-                <span className="text-yellow-500">Card</span>{" "}
-                <span className="text-red-500">Vocab</span>
+                <span className="text-yellow-500">Vocab</span>{" "}
+                <span className="text-red-500">Card</span>
               </h1>
             </div>
           </div>

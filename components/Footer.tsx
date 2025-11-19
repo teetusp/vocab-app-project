@@ -10,7 +10,7 @@ export default function Footer() {
 
         {/* ข้อความหลัก */}
         <h3 className="text-lg font-semibold tracking-wide">
-          🚀 Created with by <span className="text-yellow-400">SAU</span>
+          🚀 Created by <span className="text-yellow-400">SAU</span>
         </h3>
 
         {/* ข้อความล่าง */}

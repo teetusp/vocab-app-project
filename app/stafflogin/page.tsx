@@ -87,8 +87,8 @@ export default function page() {
                 className="w-10 h-10 drop-shadow-md"
               />
               <h1 className="text-2xl font-black text-indigo-600 tracking-wide">
-                <span className="text-yellow-300">Card</span>{" "}
-                <span className="text-red-600">Vocab</span>
+                <span className="text-yellow-300">Vocab</span>{" "}
+                <span className="text-red-600">Card</span>
               </h1>
             </div>
           </div>

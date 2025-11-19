@@ -222,8 +222,8 @@ export default function page() {
             >
               <Image src={rocket} alt="Logo" className="w-12 h-12 mr-2 animate-bounce" />
               <h1 className="text-3xl font-black tracking-wide">
-                <span className="text-yellow-100 drop-shadow-lg">Card</span>{" "}
-                <span className="text-white drop-shadow-lg">Vocab</span>
+                <span className="text-yellow-100 drop-shadow-lg">Vocab</span>{" "}
+                <span className="text-white drop-shadow-lg">Card</span>
               </h1>
             </div>
           </div>

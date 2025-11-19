@@ -44,10 +44,10 @@ export default function NavBar() {
             </div>
             <h1 className="text-3xl font-black tracking-wide drop-shadow-lg">
               <span className="text-white drop-shadow-[0_2px_8px_rgba(255,255,0,0.8)]">
-                Card
+                Vocab
               </span>{" "}
               <span className="text-red-700 drop-shadow-[0_2px_8px_rgba(255,0,0,0.8)]">
-                Vocab
+                Card
               </span>
             </h1>
           </div>

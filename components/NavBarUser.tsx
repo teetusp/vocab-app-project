@@ -111,8 +111,8 @@ export default function Navbar() {
               <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-400 rounded-full animate-ping"></div>
             </div>
             <h1 className="text-3xl font-black tracking-wide drop-shadow-lg">
-              <span className="text-yellow-300 text-shadow">Card</span>{" "}
-              <span className="text-white text-shadow">Vocab</span>
+              <span className="text-yellow-300 text-shadow">Vocab</span>{" "}
+              <span className="text-white text-shadow">Card</span>
             </h1>
           </div>
 

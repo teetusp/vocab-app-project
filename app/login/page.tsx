@@ -130,8 +130,8 @@ export default function page() {
                 className="w-12 h-12 drop-shadow-lg animate-pulse"
               />
               <h1 className="text-3xl font-black tracking-wide drop-shadow-md">
-                <span className="text-white">Card</span>
-                <span className="text-yellow-300">Vocab</span>
+                <span className="text-white">Vocab</span>{" "}
+                <span className="text-yellow-300">Card</span>
               </h1>
             </div>
           </div>
