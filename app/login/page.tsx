@@ -173,7 +173,7 @@ export default function page() {
             </span>
           </h1>
 
-          <div className="space-y-4 mb-8">
+          {/*<div className="space-y-4 mb-8">
             <button className="w-full py-4 bg-white border-4 border-red-400 rounded-2xl shadow-lg flex items-center justify-center space-x-3 hover:shadow-xl hover:border-red-500 transition duration-150 transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-red-300">
               <FcGoogle className="w-7 h-7" />
               <span className="text-gray-800 font-bold text-lg">
@@ -195,7 +195,7 @@ export default function page() {
               หรือ ⭐
             </span>
             <div className="flex-grow border-t-4 border-purple-300 border-dotted"></div>
-          </div>
+          </div>*/}
 
           <form onSubmit={handleLogin} className="space-y-6">
             {/* Email Input */}
