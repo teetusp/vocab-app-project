@@ -322,7 +322,7 @@ export default function page() {
             <div>
               <label className="block text-gray-800 font-bold mb-2 text-lg flex items-center space-x-2">
                 <span>🎂</span>
-                <span>วันเกิดของคุณ (เดือน/วัน/ปี)<span className="text-red-500">*</span></span>
+                <span>วันเกิดของคุณ<span className="text-red-500">*</span></span>
               </label>
               <div className="relative">
                 <SlCalender className="absolute left-4 top-1/2 transform -translate-y-1/2 w-6 h-6 text-green-500" />
