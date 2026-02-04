@@ -1,4 +1,4 @@
-🌐 Web Application with Next.js & Tailwind CSS 🎉🎈👶
+# 🌐 Web Application with Next.js & Tailwind CSS 🎉🎈👶
 
 ## 📸 Preview
 
