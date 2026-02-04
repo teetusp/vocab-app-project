@@ -1,19 +1,6 @@
-# 🌐 Web Application with Next.js & Tailwind CSS
+# 🌐 Web Application with Next.js & Tailwind CSS 🎉🎈👶
 
-Modern web application built with **React (Next.js)** and **Tailwind CSS**  
-เน้น UI สวย โหลดไว Responsive ทุกอุปกรณ์ ✨
-
----
-
-## 🚀 Tech Stack
-
-- ⚛️ **Next.js** – React Framework
-- 🎨 **Tailwind CSS** – Utility-first CSS
-- 🧠 **TypeScript**
-- 📦 **Node.js / npm**
-- 💻 **Modern UI Design**
-
----
+--
 
 ## 📸 Preview
 
@@ -34,6 +21,4 @@ Modern web application built with **React (Next.js)** and **Tailwind CSS**
 </p>
 
 ---
-
-## 📂 Project Structure
 
