@@ -1,4 +1,4 @@
-# Web Application by React Next 👲🎈
+# Web Application by React Next.js and Tailwind CSS 👲🎈
 <img width="900" height="437" alt="image" src="https://github.com/user-attachments/assets/b55f9580-085b-4699-95f8-133403106118" />
 <img width="900" height="437" alt="image" src="https://github.com/user-attachments/assets/364f6c80-9b52-412f-a32c-ea3ae6ccb77a" />
 <img width="900" height="437" alt="image" src="https://github.com/user-attachments/assets/ed41472f-e7fb-4934-92a1-3fa22235270e" />
