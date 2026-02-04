@@ -1,6 +1,4 @@
-# 🌐 Web Application with Next.js & Tailwind CSS 🎉🎈👶
-
---
+🌐 Web Application with Next.js & Tailwind CSS 🎉🎈👶
 
 ## 📸 Preview
 
@@ -20,5 +18,4 @@
   <img src="https://github.com/user-attachments/assets/92e1dbbd-ebe6-4948-b85d-5f26f913a554" width="900" />
 </p>
 
----
 
